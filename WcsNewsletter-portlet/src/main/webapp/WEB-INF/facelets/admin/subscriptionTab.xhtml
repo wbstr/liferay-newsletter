@@ -1,0 +1,89 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <p:panel id="subscriptionTabPanel" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+        <p:panel id="listPanel" rendered="#{!subscriptionTabWrapperController.editView}" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+            <h:form id="subscriptionTabListForm">                
+                <f:event type="preRenderView" listener="#{subscriptionListController.initController()}"/>
+                <f:event type="preRenderView" listener="#{subscriptionEditController.initController()}"/>
+                <p:dataTable 
+                    id="subscriptionListTable" 
+                    var="subscription" 
+                    value="#{subscriptionListController.model}"
+                    rowIndexVar="rowKey"
+                    selection="#{subscriptionListController.selectedElems}"
+                    sortBy="#{subscription.email}" 
+                    sortFunction="#{sortTools.sort}"                
+                    paginator="true"
+                    rows="10"
+                    rowsPerPageTemplate="10,25,50,100"  
+                    paginatorPosition="bottom"
+                    emptyMessage="#{messages.admin_general_empty_list}"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {RowsPerPageDropdown}"  
+                    currentPageReportTemplate="#{messages.admin_general_pagerCurrentPageReportTemplate}" 
+                    styleClass="marginTopBottom listTable"
+                    widgetVar="subscriptionTable"   
+                    >  
+
+                    <p:column headerText="#{messages.admin_subscriptions_email}" sortBy="#{subscription.email}" sortFunction="#{sortTools.sort}" filterBy="#{subscription.email}" filterMatchMode="contains" >  
+                        <h:outputText value="#{subscription.email}" />  
+                    </p:column>                 
+
+                    <p:column headerText="#{messages.admin_subscriptions_name}" sortBy="#{subscription.name}" sortFunction="#{sortTools.sort}" filterBy="#{subscription.name}" filterMatchMode="contains" >  
+                        <h:outputText value="#{subscription.name}" />  
+                    </p:column> 
+
+                    <p:column headerText="#{messages.admin_subscriptions_categories}" sortBy="#{subscription.categoryCount}" styleClass="shortColumn" >  
+                        <h:outputText value="#{subscription.categoryCount}" />  
+                    </p:column>                 
+
+                    <p:column styleClass="actionColumn">  
+                        <p:commandButton value="#{messages.admin_general_edit}" update=":adminTabView:subscriptionTabPanel" action="#{subscriptionTabWrapperController.editSubs(subscription)}" />
+                    </p:column>                
+
+                </p:dataTable>              
+
+                <p:commandButton value="Sync" rendered="false" actionListener="#{subscriptionListController.syncronizeSubscriptions()}" />
+
+            </h:form>         
+        </p:panel>
+        <p:panel id="editPanel" rendered="#{subscriptionTabWrapperController.editView}" >
+
+            <h:form id="subscriptionEditForm" styleClass="marginTopBottom">
+
+
+                <p:panelGrid columns="1" styleClass="panelGrid newsletterEditPanelGrid">
+                    <h:outputText value="#{messages.admin_subscriptions_name}:" styleClass="outputText" />
+                    <h:inputText id="name" value="#{subscriptionEditController.elem.userName}" readonly="true" styleClass="inputText" />
+
+                    <h:outputText value="#{messages.admin_subscriptions_email}:" styleClass="outputText" />
+                    <h:inputText id="email" value="#{subscriptionEditController.elem.emailString}" readonly="true" styleClass="inputText" />                
+
+                    <h:outputText value="#{messages.admin_subscriptions_categories}:" styleClass="outputText" />
+
+                    <p:pickList id="categories" var="category" value="#{subscriptionEditController.categoriesModel}" itemLabel="#{category.name}" style="width:800px" itemValue="#{category}" converter="categoryConverter" >
+                        <f:facet name="sourceCaption">#{messages.admin_newsletters_picklist_available}</f:facet>  
+                        <f:facet name="targetCaption">#{messages.admin_newsletters_picklist_selected}</f:facet>                  
+                        <p:column style="width:90%;">  
+                            #{category.name}  
+                        </p:column>                          
+                        <p:column style="width:10%">  
+                            <span class="#{subscriptionEditController.getCategoryConfirmed(category.categoryId)? 'circleSpan': ''}"></span>
+                        </p:column>  
+                    </p:pickList>                            
+
+                    <h:panelGroup>
+                        <p:commandButton value="#{messages.admin_general_ok}" actionListener="#{subscriptionEditController.save()}" onsuccess="backToUserListOnSave()" update="@form" styleClass="marginRight" />                      
+                        <p:commandButton value="#{messages.admin_general_back}" action="#{subscriptionTabWrapperController.backToList()}" update=":adminTabView:subscriptionTabPanel" immediate="true"/>                      
+                        <p:remoteCommand actionListener="#{subscriptionTabWrapperController.backToList()}" name="backToUserListOnSave" update=":adminTabView:subscriptionTabPanel" />
+                    </h:panelGroup>                
+
+                </p:panelGrid>  
+<p:growl autoUpdate="true" sticky="false" />
+            </h:form>        
+        </p:panel>
+    </p:panel>
+</ui:composition>

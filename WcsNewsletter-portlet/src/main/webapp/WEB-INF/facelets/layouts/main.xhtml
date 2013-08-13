@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:head>
+
+    </h:head>    
+    <h:body styleClass="WcsNewsletter" >
+        <f:view contentType="text/html" locale="hu_HU" id="rootView">
+            <h:form id="tabMenuForm">
+                <p:tabMenu activeIndex="#{navigationController.activeIndex}">
+                    <p:menuitem value="#{messages.admin_menu_categories}" action="#{navigationController.navigateToCategoriesMenu()}" />
+                    <p:menuitem value="#{messages.admin_menu_users}" action="#{navigationController.navigateToSubscriptionsMenu()}" />
+                    <p:menuitem value="#{messages.admin_menu_newsletters}" action="#{navigationController.navigateToNewslettersMenu()}" />
+                    <p:menuitem value="#{messages.admin_menu_config}" action="#{navigationController.navigateToNewslettersConfig()}" />
+                </p:tabMenu>                 
+            </h:form>
+            <h1>
+                <h:outputText value="#{messages.admin_menu_categories}" rendered="#{navigationController.isCategories()}" />     
+                <h:outputText value="#{messages.admin_menu_categories_edit}" rendered="#{navigationController.isCategoriesEdit()}" />     
+                <h:outputText value="#{messages.admin_menu_users}" rendered="#{navigationController.isUsers()}" />     
+                <h:outputText value="#{messages.admin_menu_users_edit}" rendered="#{navigationController.isUsersEdit()}" />     
+                <h:outputText value="#{messages.admin_menu_newsletters}" rendered="#{navigationController.isNewsletters()}" />     
+                <h:outputText value="#{messages.admin_menu_newsletters_list}" rendered="#{navigationController.isNewslettersList()}" />     
+                <h:outputText value="#{messages.admin_menu_newsletters_edit}" rendered="#{navigationController.isNewslettersEdit()}" />     
+                <h:outputText value="#{messages.admin_menu_newsletters_list_edit}" rendered="#{navigationController.isNewslettersListEdit()}" />     
+                <h:outputText value="#{messages.admin_menu_config}" rendered="#{navigationController.isConfig()}" />             
+            </h1>
+            <ui:insert name="content"/>  
+        </f:view>
+    </h:body>    
+</html>

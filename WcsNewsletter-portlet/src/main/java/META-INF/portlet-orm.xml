@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.CategoryModelImpl">
+		<attributes>
+			<id name="categoryId" />
+			<basic name="name" />
+			<basic name="locale" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.EmailTemplateModelImpl">
+		<attributes>
+			<id name="emailTemplateId" />
+			<basic name="fileEntryId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.LabelModelImpl">
+		<attributes>
+			<id name="labelId" />
+			<basic name="tagId" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.NewsletterModelImpl">
+		<attributes>
+			<id name="newsletterId" />
+			<basic name="subject" />
+			<basic name="sender" />
+			<basic name="contentId" />
+			<basic name="contentVersion" />
+			<basic name="templateId" />
+			<basic name="templateVersion" />
+			<basic name="parentId" />
+			<basic name="creationTime">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="state" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.NewsletterConfigModelImpl">
+		<attributes>
+			<id name="configId" />
+			<basic name="configKey" />
+			<basic name="configValue" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.RecipientModelImpl">
+		<attributes>
+			<id name="recipientId" />
+			<basic name="newsletterId" />
+			<basic name="email" />
+			<basic name="status" />
+			<basic name="errorMessage" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.SubscriptionModelImpl">
+		<attributes>
+			<id name="subscriptionId" />
+			<basic name="userId" />
+			<basic name="email" />
+			<basic name="subscriptionDate">
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.wcs.newsletter.model.impl.SubscriptionCategoryModelImpl">
+		<id-class class="com.wcs.newsletter.service.persistence.SubscriptionCategoryPK" />
+		<attributes>
+			<id name="subscriptionId" />
+			<id name="categoryId" />
+			<basic name="confirmationKey" />
+			<basic name="cancellationKey" />
+			<basic name="status" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="com.wcs.newsletter.model.impl.CategoryImpl" name="Category">
+		<table name="WcsNewsletter_Category" />
+		<attributes />
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.EmailTemplateImpl" name="EmailTemplate">
+		<table name="WcsNewsletter_EmailTemplate" />
+		<attributes />
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.LabelImpl" name="Label">
+		<table name="WcsNewsletter_Label" />
+		<attributes />
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.NewsletterImpl" name="Newsletter">
+		<table name="WcsNewsletter_Newsletter" />
+		<attributes />
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.NewsletterConfigImpl" name="NewsletterConfig">
+		<table name="WcsNewsletter_NewsletterConfig" />
+		<attributes />
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.RecipientImpl" name="Recipient">
+		<table name="WcsNewsletter_Recipient" />
+		<attributes />
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.SubscriptionImpl" name="Subscription">
+		<table name="WcsNewsletter_Subscription" />
+		<attributes>
+			<transient name="user" />
+		</attributes>
+	</entity>
+	<entity class="com.wcs.newsletter.model.impl.SubscriptionCategoryImpl" name="SubscriptionCategory">
+		<table name="WcsNewsletter_Subscription_Category" />
+		<attributes />
+	</entity>
+</entity-mappings>

@@ -1,0 +1,1 @@
+Liferay.Service.register("Liferay.Service.WcsNewsletter", "com.wcs.newsletter.service", "WcsNewsletter-portlet");

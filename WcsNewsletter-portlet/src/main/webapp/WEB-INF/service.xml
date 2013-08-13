@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+<service-builder package-path="com.wcs.newsletter">
+    <namespace>WcsNewsletter</namespace>
+
+    <entity name="Category" local-service="true" remote-service="false">
+        <column name="categoryId" db-name="categoryId" type="long" primary="true" id-type="increment"></column>
+        <column name="name" db-name="name" type="String"></column>
+        <column name="locale" db-name="locale" type="String"></column>
+        <finder name="Locale" return-type="Collection">
+            <finder-column name="locale" />
+        </finder> 
+    </entity>                                                                  
+    <entity name="Label" local-service="true" remote-service="false">
+        <column name="labelId" db-name="labelId" type="long" primary="true" id-type="identity"></column>
+        <column name="tagId" db-name="tagId" type="long"></column>
+        
+        <finder name="TagId" return-type="Collection">
+            <finder-column name="tagId" />
+        </finder>         
+    </entity>      
+    <entity name="Subscription" local-service="true" remote-service="false">
+        <column name="subscriptionId" db-name="subscriptionId" type="long" primary="true" id-type="increment"></column>
+        <column name='userId' db-name='userId' type='long'></column>
+        <column name="email" db-name="email" type="String"></column>   
+        <column name="subscriptionDate" db-name="subscriptionDate" type="Date"></column>
+
+        <finder name="Email" return-type="Collection">
+            <finder-column name="email" />
+        </finder> 
+        <finder name="UserId" return-type="Collection">
+            <finder-column name="userId" />
+        </finder> 
+    </entity>  
+    <entity name="SubscriptionCategory" table="WcsNewsletter_Subscription_Category" local-service="true" remote-service="false">
+        <column name="subscriptionId" db-name="subscriptionId" type="long" primary="true"></column>
+        <column name="categoryId" db-name="categoryId" type="long" primary="true"></column>
+        <column name="confirmationKey" db-name="confirmationKey" type="String"></column>        
+        <column name="cancellationKey" db-name="cancellationKey" type="String"></column> 
+        <column name="status" db-name="status" type="String"></column> 
+
+        <finder name="SubscriptionId" return-type="Collection">
+            <finder-column name="subscriptionId" />
+        </finder>    
+        <finder name="CategoryId" return-type="Collection">
+            <finder-column name="categoryId" />
+        </finder>   
+        <finder name="ConfirmationKey" return-type="Collection">
+            <finder-column name="confirmationKey" />
+        </finder>          
+        <finder name="CancellationKey" return-type="Collection">
+            <finder-column name="cancellationKey" />
+        </finder>          
+        <finder name="Status" return-type="Collection">
+            <finder-column name="status" />
+        </finder>          
+    </entity>   
+    <entity name="Newsletter" local-service="true" remote-service="false">
+        <column name="newsletterId" db-name="newsletterId" type="long" primary="true" id-type="increment"></column>
+        <column name="subject" db-name="subject" type="String"></column>
+        <column name="sender" db-name="sender" type="String"></column>
+        <column name="contentId" db-name="contentId" type="String"></column>
+        <column name="contentVersion" db-name="contentVersion" type="String"></column>
+        <column name="templateId" db-name="templateId" type="String"></column>
+        <column name="templateVersion" db-name="templateVersion" type="String"></column>
+        <column name="parentId" db-name="parentId" type="long"></column>
+        <column name="creationTime" db-name="creationTime" type="Date"></column>
+        <column name="state" db-name="state" type="String"></column>
+        
+        <column name="categories" type="Collection" entity="Category" mapping-table="Newsletter_Category"></column>
+        <column name="labels" type="Collection" entity="Label" mapping-table="Newsletter_Label"></column>
+        
+        <column name="recipients" type="Collection" entity="Recipient" mapping-key="newsletterId"></column>
+        
+        <finder name="ParentId" return-type="Collection">
+            <finder-column name="parentId" />
+        </finder>          
+    </entity>     
+    <entity name="Recipient" local-service="true" remote-service="false">
+        <column name="recipientId" db-name="recipientId" type="long" primary="true" id-type="increment"></column>
+        <column name="newsletterId" db-name="newsletterId" type="long"></column>
+        <column name="email" db-name="email" type="String"></column>        
+        <column name="status" db-name="status" type="String"></column>        
+        <column name="errorMessage" db-name="errorMessage" type="String"></column>  
+        <finder name="NewsletterId" return-type="Collection">
+            <finder-column name="newsletterId" />
+        </finder>       
+    </entity>    
+    <entity name="NewsletterConfig" local-service="true" remote-service="false">
+        <column name="configId" db-name="configId" type="long" primary="true" id-type="increment"></column>
+        <column name="configKey" db-name="configKey" type="String"></column>
+        <column name="configValue" db-name="configValue" type="String"></column>
+        <finder name="ConfigKey" return-type="Collection">
+            <finder-column name="configKey" />
+        </finder>      
+    </entity>
+</service-builder>

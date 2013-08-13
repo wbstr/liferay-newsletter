@@ -1,0 +1,298 @@
+/* GENERAL CSS */
+
+.WcsNewsletter {
+    font-size: 11px;
+}
+
+.WcsNewsletter .marginTopBottom,
+.WcsNewsletter .marginTop
+{
+    margin-top: 16px !important;
+}
+
+.WcsNewsletter .marginTopBottom,
+.WcsNewsletter .marginBottom
+{
+    margin-bottom: 16px !important;
+}
+
+.WcsNewsletter .marginRight {
+    margin-right: 16px !important;
+}
+
+.WcsNewsletter .floatLeft {
+    float: left;
+}
+
+.WcsNewsletter .center {
+    text-align: center;
+}
+
+.WcsNewsletter .panelGrid,
+.WcsNewsletter .panelGrid tr,
+.WcsNewsletter .panelGrid tr td
+{
+    background-color: transparent;
+    border: none;
+    vertical-align: top;
+}
+
+.newsletterEditPanelGrid{
+    width:800px;
+}
+.newsletterEditPanelGrid .ui-picklist .ui-picklist-list{
+    width:350px;
+}
+
+/* SPECIAL CSS */
+
+.WcsNewsletter .inputText {
+    width: 250px;
+}
+
+.WcsNewsletter .outputText {
+    font-weight: bold; 
+}
+
+.WcsNewsletter .actionColumn {
+    width: 120px;
+    overflow: hidden;
+}
+
+.WcsNewsletter .shortColumn {
+    width: 200px;
+    overflow: hidden;
+}
+
+.WcsNewsletter .selectorColumn {
+    width: 20px !important;    
+    text-align: center !important;   
+}
+
+.WcsNewsletter .listTable .ui-datatable-header {
+    border: none;
+    background-color: transparent; 
+    background-image: none;
+    text-align: left;
+    padding: 0;
+    padding-bottom: 16px;
+}
+
+/*
+.WcsNewsletter .tagCheckbox .ui-icon-check {
+    background-position: -96px -128px;
+}
+
+.WcsNewsletter .tagCheckbox {
+    vertical-align: middle;
+    margin: 3px;
+}
+
+*/
+
+.WcsNewsletter .closeButton {
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
+}
+
+.WcsNewsletter .tagContainer {
+    background-color: #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
+    border: 1px solid #A8A8A8;
+    margin-bottom: 10px;
+}
+
+.WcsNewsletter .hiddentagContainer {
+    display: none;
+}
+
+.WcsNewsletterTagSelectorCheckboxMenuPanel .ui-selectcheckboxmenu-header .ui-chkbox {
+    display: none;
+}
+
+.WcsNewsletter .tagWrapper {
+    float: left;
+    background-color: #DEE7F8;
+    border-radius: 7px;
+    margin: 5px;
+    padding: 0 5px;
+}
+
+.WcsNewsletter .tag {
+    padding: 2px ;
+    margin-right: 3px;
+    display: block;
+    float: left;
+}
+
+.subscriptionFormContainer .ui-multiselect { 
+    padding:8px 0 6px 18px;
+    text-align:left;
+    float: left;
+    width:190px !important;
+    background-image: url(images/select_piros_nyillal.jpg)!important;
+    font-weight: normal;
+    border: none;
+    border-radius:0;
+}
+.subscriptionFormContainer .ui-multiselect:hover{
+    background-image: url(images/select_piros_nyillal.jpg)!important;
+}
+.subscriptionFormContainer .ui-multiselect span.ui-icon { float:right }
+.subscriptionFormContainer .ui-multiselect-single .ui-multiselect-checkboxes input { position:absolute !important; top: auto !important; left:-9999px; }
+.subscriptionFormContainer .ui-multiselect-single .ui-multiselect-checkboxes label { padding:5px !important }
+
+.subscriptionFormContainer .ui-multiselect-header { margin-bottom:3px; padding:3px 0 3px 4px }
+.subscriptionFormContainer .ui-multiselect-header ul { font-size:0.9em }
+.subscriptionFormContainer .ui-multiselect-header ul li { float:left; padding:0 10px 0 0 }
+.subscriptionFormContainer .ui-multiselect-header a { text-decoration:none }
+.subscriptionFormContainer .ui-multiselect-header a:hover { text-decoration:underline }
+.subscriptionFormContainer .ui-multiselect-header span.ui-icon { float:left }
+.subscriptionFormContainer .ui-multiselect-header li.ui-multiselect-close { float:right; text-align:right; padding-right:0 }
+
+.ui-multiselect-menu { display:none; padding:3px; position:absolute; z-index:10000; text-align: left }
+.ui-multiselect-checkboxes { position:relative /* fixes bug in IE6/7 */; overflow-y:auto }
+.ui-multiselect-checkboxes label { cursor:default; display:block; border:1px solid transparent; padding:3px 1px }
+.ui-multiselect-checkboxes label input { position:relative; top:1px }
+.ui-multiselect-checkboxes li { clear:both; font-size:0.9em; padding-right:3px }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label { text-align:center; font-weight:bold; border-bottom:1px solid }
+.ui-multiselect-checkboxes li.ui-multiselect-optgroup-label a { display:block; padding:3px; margin:1px 0; text-decoration:none }
+
+/* remove label borders in IE6 because IE6 does not support transparency */
+* html .ui-multiselect-checkboxes label { border:none }
+
+
+.subscriptionFormContainer .ui-multiselect span.ui-icon{
+    background-image: none;
+}
+.subscriptionFormContainer .ui-multiselect-checkboxes li{
+    border-bottom:1px solid #cccccc;
+    margin-left: 5px;
+}
+.subscriptionFormContainer .ui-multiselect-checkboxes label input[type="checkbox"]{
+    /*display: none;*/
+    /*    background-image: url(images/checkboxbg.png);*/
+    margin-right: 5px;
+}
+.subscriptionFormContainer .ui-multiselect-checkboxes label span{
+    padding-bottom:2px;
+}
+.subscriptionFormContainer .spaceholder{
+    /*    display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-image: url(images/checkboxbg.png);*/
+}
+#footer .row .subscriptionFormContainer .newsletter-button{
+    float:right;  
+    margin-right: 40px;
+    /*margin-top: 10px;*/
+
+
+}
+.subscriptionFormContainer .multiWebstarSelect{
+    float:left;
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus, .ui-multiselect-menu.ui-widget-content .ui-state-hover,.ui-multiselect-menu.ui-widget-content .ui-state-focus,
+.subscriptionFormContainer .ui-state-hover, .subscriptionFormContainer .ui-widget-content .ui-state-hover, .subscriptionFormContainer .ui-widget-header .ui-state-hover, .subscriptionFormContainer .ui-state-focus, .ui-widget-content .ui-state-focus, .subscriptionFormContainer .ui-widget-header .ui-state-focus{
+    /*    background: none;
+        border: none;
+        box-shadow: none;
+        font-weight: normal;    */
+    background: none repeat scroll 0 0 transparent;
+    border: 1px solid transparent;
+    box-shadow:none;
+    color: #313131;
+    font-weight: normal;
+    /*       background: none repeat scroll 0 0 transparent !important;
+        border: 1px solid transparent !important;
+        box-shadow:none !important;
+        color: #313131 !important;
+        font-weight: normal !important;*/
+}
+.subscriptionFormContainer input[type="submit"]:hover, .subscriptionFormContainer input[type="button"]:hover, .subscriptionFormContainer input[type="reset"]:hover, .subscriptionFormContainer button:hover, .subscriptionFormContainer .lfr-actions:hover, .subscriptionFormContainer .lfr-actions:hover ul{
+    background: none;
+    background-position:0px 0px; 
+}
+.subscriptionFormContainer .ui-multiselect-checkboxes label{
+    /*min-height: 25px;*/
+}
+#footer .row .subscriptionFormContainer .newsletter-text{
+    background-color: #fff;
+    margin-bottom: 5px
+}
+.subscriptionFormContainer .emailMess{bottom:25px;}
+.subscriptionFormContainer .catMess{}
+#footer .row .subscriptionFormContainer .portlet-msg-error{
+    color:#000;
+}
+
+.subscriptionFormContainer .ui-multiselect:hover{
+    color:#BF2126;
+    border:none;
+} 
+
+
+.ui-picklist .ui-picklist-caption{
+    width:330px;
+}
+
+.ui-panel{
+    padding:0px;
+    border:none;
+}
+span.circleSpan{
+    display: inline-block;
+    height:8px;
+    width:8px;
+    border:1px solid #2c9065;
+    border-radius: 8px;
+    background-color:#2c9065; 
+}
+
+.newsletterEditPanelGrid.ui-panelgrid .ui-picklist .ui-button{
+    margin-right: 5px;
+}
+.newsletterEditPanelGrid.ui-panelgrid td{
+    padding:0;
+}
+hr.newsletterHr{
+    border-top:1px solid #bfbfbf;
+}
+.WcsNewsletter .inputText.newsletterEditInput{
+    width:348px;
+    margin:5px 0px;
+}
+.WcsNewsletter .newsletterEditInputButton{
+    width:70px;
+}
+.WcsNewsletter .inputText.newsletterEditInputWithButton{
+    width:273px;
+    margin:5px 5px 5px 0;    
+}
+
+.WcsNewsletterTab .ui-datatable thead th, .WcsNewsletterTab .ui-datatable tbody td, .WcsNewsletterTab .ui-datatable tfoot td{
+    white-space: normal;
+}
+
+.subscriptionFormContainer{
+    
+}
+.subscriptionFormContainer .multiWebstarSelect{
+    float: none;
+}
+.subscriptionFormContainer .ui-multiselect{
+    float: none;
+    display: block;
+}
+.multiWebstarSelect{
+    float: none;
+    display: block;
+}
+.newsletter-button{
+    display: block;
+}
+.newsletter-text{
+    display: block;
+}

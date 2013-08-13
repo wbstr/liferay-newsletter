@@ -1,0 +1,65 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:form id="subscriptionConfigForm" styleClass="marginTopBottom">
+        <f:event type="preRenderView" listener="#{navigationController.initNewslettersConfig()}"/>
+        <f:event type="preRenderView" listener="#{navigationController.initNewsletterConfigSubMenu()}"/>
+        <f:event type="preRenderView" listener="#{configController.initController()}"/>
+
+        <h:panelGroup rendered="#{!configController.installedDefaults}">
+            <p:commandButton value="#{messages.admin_general_install}" actionListener="#{configController.installDefaultContents()}" update="@form" styleClass="marginRight" />                      
+<br /><br />
+        </h:panelGroup> 
+
+        <h:panelGroup>
+            <h:outputText value="#{messages.admin_subscription_email}:" styleClass="outputText marginRight" />                  
+            <h:inputText styleClass="inputText newsletterEditInputWithButton" rendered="#{configController.selectedTemplate!=null}" readonly="true" value="#{configController.selectedTemplate.title}" />
+            <p:commandButton onclick="editorDlg2.show()"  styleClass="marginRight" value="#{messages.choose}" />
+        </h:panelGroup>    
+        <br />
+        <br />
+        <h:panelGroup>
+            <h:outputText value="#{messages.admin_subscription_sync_users}:" styleClass="outputText marginRight" />                  
+            <h:selectBooleanCheckbox styleClass="" value="#{configController.syncUsers}" />
+
+        </h:panelGroup>    
+        <br />
+        <br />
+        <hr class="newsletterHr" />
+        <p:commandButton value="#{messages.admin_general_save}" actionListener="#{configController.save()}" update="@form" styleClass="marginRight" />                      
+        
+        <p:growl autoUpdate="true" sticky="false" />
+    </h:form>    
+    <h:form prependId="false">
+    <p:dialog id="editorDlg2" widgetVar="editorDlg2" closeOnEscape="true" header="#{messages.admin_newsletter_confirm_template}" resizable="true"
+                  dynamic="true" modal="true">  
+            <p:dataTable value="#{configController.templateList}"
+                         var="wc" id="templateTable"
+                         rowKey="#{wc.fileEntryId}"                                 
+                         widgetVar="templateTable"
+                         styleClass="higherTd"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         selectionMode="single"
+                         selection="#{configController.selectedTemplate}"
+                         style="margin-top: 15px;">
+                <p:ajax event="rowSelect" update=":adminTabView:subscriptionConfigForm" listener="#{configController.canSetTemplate()}" oncomplete="editorDlg2.hide();" />               
+                <p:column headerText="id" style="text-align: center;">
+                    <h:outputText value="#{wc.fileEntryId}" />
+                </p:column>
+                <p:column headerText="#{messages.admin_general_title}" style="text-align: center;">
+                    <h:outputText value="#{wc.title}" />
+                </p:column>  
+                <p:column headerText="#{messages.admin_general_version}" style="text-align: center;">
+                    <h:outputText value="#{wc.version}" />
+                </p:column>  
+
+
+            </p:dataTable> 
+        </p:dialog>
+    </h:form>
+</ui:composition>

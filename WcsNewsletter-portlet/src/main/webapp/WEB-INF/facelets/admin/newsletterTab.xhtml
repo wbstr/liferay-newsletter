@@ -1,0 +1,272 @@
+<ui:composition                 xmlns="http://www.w3.org/1999/xhtml"
+                                xmlns:h="http://java.sun.com/jsf/html"
+                                xmlns:ui="http://java.sun.com/jsf/facelets"
+                                xmlns:p="http://primefaces.org/ui"
+                                xmlns:pe="http://primefaces.org/ui/extensions"
+                                xmlns:f="http://java.sun.com/jsf/core">            
+
+    <p:panel id="newsletterTabPanel" styleClass="WcsNewsletterTab" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+        <p:panel id="newsletterListPanel" rendered="#{!newsletterTabWrapperController.editView}" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+            <h:form id="newsletterListForm" styleClass="marginTopBottom">
+                <f:event type="preRenderView" listener="#{newsletterListController.initController()}"/>
+                <f:event type="preRenderView" listener="#{newsletterEditController.initController()}"/>              
+
+                <p:dataTable 
+                    id="newsletterListTable" 
+                    var="newsletter" 
+                    value="#{newsletterListController.model}"
+                    rowIndexVar="rowKey"
+                    selection="#{newsletterListController.selectedElems}"
+                    sortBy="#{newsletter.creationDate}" 
+                    sortFunction="#{sortTools.sort}"                
+                    paginator="true"
+                    rows="10"
+                    rowsPerPageTemplate="10,25,50,100"  
+                    paginatorPosition="bottom"
+                    emptyMessage="#{messages.admin_general_empty_list}"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                    currentPageReportTemplate="#{messages.admin_general_pagerCurrentPageReportTemplate}" 
+                    styleClass="marginTopBottom listTable"
+                    widgetVar="newsletterTable"                   
+                    >  
+
+                    <p:column selectionMode="multiple" id="multiselect" styleClass="selectorColumn" >  
+
+                    </p:column>                    
+
+                    <p:column headerText="#{messages.admin_newsletters_subject}" sortBy="#{newsletter.subject}" sortFunction="#{sortTools.sort}" filterBy="#{newsletter.subject}" filterMatchMode="contains" >  
+                        <h:outputText value="#{newsletter.subject}" />  
+                    </p:column>                                          
+
+                    <p:column headerText="#{messages.admin_newsletter_tags}" sortBy="#{newsletter.tags}" sortFunction="#{sortTools.sort}" filterBy="#{newsletter.tags}" filterMatchMode="contains" >  
+                        <h:outputText value="#{newsletter.tags}" />  
+                    </p:column>                   
+                    <p:column headerText="#{messages.admin_newsletters_creation_table}" sortBy="#{newsletter.creationDate}" sortFunction="#{sortTools.creationDate}" filterBy="#{newsletter.creationDate}" filterMatchMode="contains" >  
+                        <h:outputText value="#{newsletter.creationDate}" />  
+                    </p:column>                   
+
+                    <p:column styleClass="actionColumn" headerText="#{messages.admin_newsletters_recipients}">  
+                        <p:commandButton oncomplete="editorDlg4.show()" rendered="#{newsletter.creationDate!=null}" actionListener="#{newsletterEditController.generateUserListTable(newsletter.newsletter)}" update=":adminTabView:newsletterListForm:editorDlg4" styleClass="marginRight" value="#{messages.admin_menu_users}" />
+                    </p:column>                       
+                    <p:column styleClass="actionColumn"  headerText="#{messages.admin_newsletters_content_head}"> 
+                        <h:commandLink style="font-weight: bold;" rendered="#{newsletter.creationDate!=null}"  action="#{newsletterEditController.viewNewsletterInContent(newsletter.newsletter.newsletterId)}" id="nyomtatas" target="_blank">#{messages.admin_general_view}</h:commandLink>
+                    </p:column>    
+                    <p:column styleClass="actionColumn">
+                        <p:commandButton value="#{messages.admin_general_edit}" update=":adminTabView:newsletterTabPanel" action="#{newsletterTabWrapperController.editNewsletter(newsletter)}" />
+                    </p:column>                   
+
+                </p:dataTable>                
+
+                <h:panelGroup>
+                    <p:commandButton value="#{messages.admin_newsletters_new_newsletter}" update=":adminTabView:newsletterTabPanel" action="#{newsletterTabWrapperController.createNewsletter()}" styleClass="marginRight" />
+                    <p:commandButton value="#{messages.admin_general_delete}" onclick="deleteConfirmation.show()" type="button" />
+                </h:panelGroup>
+                <p:dialog id="editorDlg4" widgetVar="editorDlg4"  header="#{messages.admin_general_subscriptionlist}" resizable="true" closeOnEscape="true"
+                          dynamic="true" modal="true">  
+                    <p:dataTable value="#{newsletterEditController.userList}"
+                                 var="wc" id="userList"
+                                 rowKey="#{wc.email}"                                 
+                                 widgetVar="userList"
+                                 styleClass="higherTd"
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,25,50,100"  
+                                 style="margin-top: 15px;">
+
+                        <p:column headerText="#{messages.admin_general_email}"  filterBy="#{wc.email}" filterMatchMode="contains" style="text-align: center;">
+                            <h:outputText value="#{wc.email}" />
+                        </p:column>
+                    </p:dataTable> 
+                </p:dialog>
+                <p:confirmDialog 
+                    id="deleteConfirmationDialog"
+                    message="#{messages.admin_general_delete_confirm_question}"  
+                    header="#{messages.admin_general_delete}" 
+                    severity="alert" 
+                    widgetVar="deleteConfirmation">  
+
+                    <p:commandButton id="confirm" value="#{messages.admin_general_yes}" update="@form" oncomplete="deleteConfirmation.hide()" actionListener="#{newsletterListController.delete()}" />  
+                    <p:commandButton id="decline" value="#{messages.admin_general_no}" onclick="deleteConfirmation.hide()" type="button" />   
+
+                </p:confirmDialog>              
+
+            </h:form>            
+
+        </p:panel>
+        <p:panel id="newsletterEditPanel"  rendered="#{newsletterTabWrapperController.editView}" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+            <h:form id="newsletterEditForm" styleClass="marginTopBottom">
+
+
+                <p:outputPanel styleClass="panelGrid newsletterEditPanelGrid">
+                    <p:outputPanel style="float:left;width:392px;">
+                        <h:outputText value="#{messages.admin_newsletters_subject}:" styleClass="outputText" /><br />
+                        <h:inputText id="subject" value="#{newsletterEditController.elem.subject}" label="#{messages.admin_newsletters_subject}" required="true" disabled="#{!newsletterEditController.canEdit}" readonly="#{!newsletterEditController.canEdit}"  styleClass="inputText newsletterEditInput" />
+                        <br /><br />
+                        <h:outputText value="#{messages.admin_newsletters_sender}:" styleClass="outputText" /><br />
+                        <h:inputText id="sender" value="#{newsletterEditController.elem.sender}" label="#{messages.admin_newsletters_sender}" required="true" styleClass="inputText newsletterEditInput" disabled="#{!newsletterEditController.canEdit}" readonly="#{!newsletterEditController.canEdit}"  />  
+                        <br /><br />
+                        <h:outputText value="#{messages.admin_categories_category_locale}:" styleClass="outputText" /><br />
+                        <p:selectOneMenu style="width:348px" id="locale" value="#{newsletterEditController.categoryLocale}" styleClass="inputText newsletterEditInput" disabled="#{!newsletterEditController.canEdit}" >
+                            <f:selectItems value="#{newsletterEditController.availableLocales}" var="locale" itemValue="#{locale.toString()}" itemLabel="#{locale.displayName}" />
+                            <p:ajax update="categories" listener="#{newsletterEditController.onCategoryLocaleChange}" />                            
+                        </p:selectOneMenu>
+                        <br /><br />      
+                    </p:outputPanel>
+                    <p:outputPanel  style="float:left;width:395px;">
+                        <h:outputText value="#{messages.admin_newsletters_content}:" styleClass="outputText" /><br />
+                        <p:outputPanel id="newsletterContentPanelGroup">
+                            <h:inputText styleClass="inputText newsletterEditInputWithButton" disabled="#{!newsletterEditController.canEdit}" onfocus="editorDlg.show()" rendered="#{newsletterEditController.selectedWc!=null}" readonly="true" value="#{newsletterEditController.getTitle(newsletterEditController.selectedWc)}" />
+                            <h:inputText styleClass="inputText newsletterEditInputWithButton" onfocus="editorDlg.show()" label="#{messages.admin_newsletters_content}" rendered="#{newsletterEditController.selectedWc==null}" required="true" />
+                            <p:commandButton onclick="editorDlg.show()"  styleClass="marginRight newsletterEditInputButton"  disabled="#{!newsletterEditController.canEdit}" value="#{messages.choose}" process="@this" />
+                        </p:outputPanel>
+                        <br /><br />
+                        <h:outputText value="#{messages.admin_newsletter_template}:" styleClass="outputText" /><br />
+                        <p:outputPanel id="newsletterTemplatePanelGroup">
+                            <h:inputText styleClass="inputText newsletterEditInputWithButton" disabled="#{!newsletterEditController.canEdit}" onfocus="editorDlg2.show()" rendered="#{newsletterEditController.selectedTemplate!=null}" readonly="true" value="#{newsletterEditController.selectedTemplate.title}" />
+                            <h:inputText styleClass="inputText newsletterEditInputWithButton" onfocus="editorDlg2.show()" label="#{messages.admin_newsletter_template}" rendered="#{newsletterEditController.selectedTemplate==null}" required="true" />
+                            <p:commandButton onclick="editorDlg2.show()"  styleClass="marginRight newsletterEditInputButton"  disabled="#{!newsletterEditController.canEdit}" value="#{messages.choose}" process="@this" />
+                        </p:outputPanel>
+                        <br /><br />
+                    </p:outputPanel>
+                    <br clear="all" />
+                    <h:outputText value="#{messages.admin_subscriptions_categories}:" styleClass="outputText" />
+                    <p:panelGrid columns="1" styleClass="panelGrid newsletterEditPanelGrid">
+                        <p:pickList id="categories" disabled="#{!newsletterEditController.canEdit}" var="category" value="#{newsletterEditController.categoriesModel}" style="width:750px" itemLabel="#{category.name}" itemValue="#{category}" converter="categoryConverter">
+                            <f:facet name="sourceCaption">#{messages.admin_newsletters_picklist_available}</f:facet>  
+                            <f:facet name="targetCaption">#{messages.admin_newsletters_picklist_selected}</f:facet>  
+                        </p:pickList>                            
+                    </p:panelGrid>
+                    <br />
+                    <p:outputPanel>
+                        <h:outputText value="#{messages.admin_newsletter_tags}:" styleClass="outputText" />
+                        <p:outputPanel id="tagSelector" layout="block" >
+                            <p:outputPanel id="tagContainer" layout="block" styleClass="#{newsletterEditController.tagContainerRendered ? 'tagContainer' : 'hiddentagContainer'}">
+                                <ui:repeat value="#{newsletterEditController.selectedTags}" var="tag" varStatus="status" >
+                                    <p:outputPanel layout="block" styleClass="tagWrapper">                                  
+                                        <h:outputText value="#{tag.name}" styleClass="tag" />
+                                        <p:commandButton icon="ui-icon-close" styleClass="closeButton" actionListener="#{newsletterEditController.removeLabel(tag)}" update="@form" disabled="#{!newsletterEditController.canEdit}" />  
+                                    </p:outputPanel>   
+                                </ui:repeat>                  
+                                <p:outputPanel layout="block" style="clear:both;"></p:outputPanel>
+                            </p:outputPanel>
+                            <p:outputPanel layout="block">
+                                <p:inputText id="labelStr" value="#{newsletterEditController.labelStr}" style="margin-right:10px" disabled="#{!newsletterEditController.canEdit}" />  
+                                <p:commandButton value="Új" actionListener="#{newsletterEditController.createLabel()}" update="@form" icon="ui-icon-plus" style="margin-right:10px" disabled="#{!newsletterEditController.canEdit}" />
+
+                                <p:selectCheckboxMenu id="tagSelectorCheckboxMenu" value="#{newsletterEditController.selectedTags}" label="#{messages.choose}" filter="true" filterMatchMode="startsWith" disabled="#{!newsletterEditController.canEdit}" style="vertical-align: middle;" converter="assetTagConverter" panelStyleClass="WcsNewsletterTagSelectorCheckboxMenuPanel" >
+                                    <f:selectItems value="#{newsletterEditController.tags}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag}"  />  
+                                    <p:ajax listener="#{newsletterEditController.onLabelChange}" update="tagContainer"></p:ajax>
+                                </p:selectCheckboxMenu>              
+                            </p:outputPanel>
+                        </p:outputPanel>  
+                        <br />
+                        <h:panelGroup>
+                            <p:commandButton value="#{messages.admin_general_save}" actionListener="#{newsletterEditController.save()}" disabled="#{!newsletterEditController.canEdit}" update="@form :adminTabView:newsletterEditForm:sendButton" styleClass="marginRight" />                                              
+                        </h:panelGroup>
+                        <br /><br />
+                        <h:panelGroup>
+                            <p:commandButton id="sendButton" value="#{messages.admin_newsletters_sending}" styleClass="marginRight" disabled="#{!newsletterEditController.canSend}" actionListener="#{newsletterEditController.send()}" update="@form" />                     
+                            <h:commandLink style="font-weight: bold;" disabled="#{!newsletterEditController.canSend}" action="#{newsletterEditController.viewNewsletterInContent(newsletterEditController.elem.newsletterId)}" target="_blank">#{messages.admin_general_view_draft}</h:commandLink>
+                        </h:panelGroup>
+                        <br /><br />
+                        <h:panelGroup rendered="#{newsletterEditController.canSend}">
+                            <h:outputText value="#{messages.admin_newsletters_testEmail}:" />
+                            <h:inputText id="testMail" value="#{newsletterEditController.testEmail}" />
+                            <p:commandButton styleClass="marginRight" actionListener="#{newsletterEditController.sendTest()}" value="#{messages.admin_general_send_test}" update="@form" />                        
+                        </h:panelGroup>
+                    </p:outputPanel> 
+                </p:outputPanel>
+                <p:dialog id="editorDlg" widgetVar="editorDlg" header="#{messages.admin_select_content}"  resizable="false" closeOnEscape="true"
+                          dynamic="false" modal="true">  
+                    <p:dataTable value="#{newsletterEditController.webContentList}"
+                                 var="wc" id="wcTable"
+                                 rowKey="#{wc.id}"                                 
+                                 widgetVar="wcTable"
+                                 styleClass="higherTd"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                 
+                                 selectionMode="single"
+                                 selection="#{newsletterEditController.selectedWc}"                             
+                                 style="margin-top: 15px;width:930px;height:530px;">
+                        <p:ajax event="rowSelect" update=":adminTabView:newsletterEditForm:newsletterContentPanelGroup" oncomplete="editorDlg.hide()"  listener="#{newsletterEditController.canSetWc()}" /> 
+
+                        <p:column headerText="#{messages.admin_general_title}" style="text-align: center;" sortBy="#{newsletterEditController.getTitle(wc)}" filterBy="#{newsletterEditController.getTitle(wc)}" filterMatchMode="contains">
+                            <h:outputText value="#{newsletterEditController.getTitle(wc)}" />
+                        </p:column>  
+                        <p:column headerText="#{messages.admin_general_version}" sortBy="#{wc.version}"  style="text-align: center;">
+                            <h:outputText value="#{wc.version}" />
+                        </p:column>    
+                        <p:column headerText="#{messages.admin_general_publish}" sortBy="#{newsletterEditController.getPubDate(wc)}" style="text-align: center;">
+                            <h:outputText value="#{newsletterEditController.getPubDate(wc)}" />
+                        </p:column>    
+                    </p:dataTable> 
+                </p:dialog>
+
+                <p:dialog id="editorDlg2" widgetVar="editorDlg2" closeOnEscape="true" header="#{messages.admin_select_template}" resizable="false"
+                          dynamic="false" modal="true">  
+                    <p:dataTable value="#{newsletterEditController.templateList}"
+                                 var="wc" id="templateTable"
+                                 rowKey="#{wc.fileEntryId}"                                 
+                                 widgetVar="templateTable"
+                                 styleClass="higherTd"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                 
+                                 selectionMode="single"
+                                 selection="#{newsletterEditController.selectedTemplate}"
+                                 style="margin-top: 15px;width:930px;height:530px;">
+                        <p:ajax event="rowSelect" update=":adminTabView:newsletterEditForm:newsletterTemplatePanelGroup" oncomplete="editorDlg2.hide()" listener="#{newsletterEditController.canSetTemplate()}" /> 
+
+                        <p:column headerText="#{messages.admin_general_title}" style="text-align: center;" filterBy="#{wc.title}" filterMatchMode="contains">
+                            <h:outputText value="#{wc.title}" />
+                        </p:column>  
+                        <p:column headerText="#{messages.admin_general_version}" style="text-align: center;">
+                            <h:outputText value="#{wc.version}" />
+                        </p:column>  
+
+
+                    </p:dataTable> 
+                </p:dialog>
+                <br />
+                <p:outputPanel>
+                    <ui:repeat value="#{newsletterEditController.childModel}" var="newsletter">
+                        <h:outputLabel value="#{messages.admin_newsletters_creation_table}: " />
+                        <h:outputText value="#{newsletter.creationDate}" />  
+                        <br /><br />
+                        <h:outputLabel value="#{messages.admin_newsletters_subject}: " />
+                        <h:outputText value="#{newsletter.subject}" />  
+                        <br /><br />
+                        <h:outputLabel value="#{messages.admin_newsletters_content_head}: " />
+                        <h:commandLink style="font-weight: bold;" action="#{newsletterEditController.viewNewsletterInContent(newsletter.newsletterId)}" id="nyomtatas" target="_blank">#{messages.admin_general_view}</h:commandLink>
+                        <br /><br />
+                        <p:commandButton oncomplete="editorDlg3.show()" actionListener="#{newsletterEditController.generateUserList(newsletter)}" update=":adminTabView:newsletterEditForm:editorDlg3" styleClass="marginRight" value="#{messages.admin_menu_users}" />
+                    </ui:repeat>
+                </p:outputPanel>
+
+                <p:dialog id="editorDlg3" widgetVar="editorDlg3" closeOnEscape="true"  header="#{messages.admin_general_subscriptionlist}" resizable="true"
+                          dynamic="true" modal="true">  
+                    <p:dataTable value="#{newsletterEditController.userList}"
+                                 var="wc" id="userList"
+                                 rowKey="#{wc.email}"                                 
+                                 widgetVar="userList"
+                                 styleClass="higherTd"
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,25,50,100"  
+                                 style="margin-top: 15px;">
+
+                        <p:column headerText="#{messages.admin_general_email}"  filterBy="#{wc.email}" filterMatchMode="contains" style="text-align: center;">
+                            <h:outputText value="#{wc.email}" />
+                        </p:column>
+                    </p:dataTable> 
+                </p:dialog>
+                <br />
+                <hr class="newsletterHr" />
+                <br />
+                <p:commandButton value="#{messages.admin_general_back}" action="#{newsletterTabWrapperController.backToList()}" update=":adminTabView:newsletterTabPanel" immediate="true"/>    
+                <p:growl autoUpdate="true" sticky="false" />
+            </h:form>    
+        </p:panel>
+    </p:panel>
+</ui:composition>

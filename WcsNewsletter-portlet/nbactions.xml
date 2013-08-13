@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>CUSTOM-Build Service</actionName>
+        <displayName>Build Service</displayName>
+        <goals>
+            <goal>liferay:build-service</goal>
+        </goals>
+    </action>
+</actions>

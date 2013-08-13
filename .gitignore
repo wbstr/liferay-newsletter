@@ -1,0 +1,16 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.orig
+WcsNewsLetter-portlet/target
+WcsRegistrationAction/target
+WcsNewsLetter-portlet-service/target
+WcsNewsLetter-portlet/src/main/resources/rebel.xml
+WcsNewsLetter-portlet/src/main/resources/service.properties
+WcsNewsLetter-portlet/nbactions-JRebel.xml
+
+/WcsNewsletter-portlet-service/target/
+/WcsNewsletter-portlet/target/

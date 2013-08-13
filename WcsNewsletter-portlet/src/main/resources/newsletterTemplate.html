@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hírlevél</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            body {
+                color: #333;
+                background-color: #f8f8f8;
+                font-family: Arial, Tahoma, Verdana;
+                margin: 0;
+                padding: 0;
+                font-size: 14px;
+            }
+
+            .main-table {
+                border: 1px solid #e5e5e5;
+                width: 610px;
+                background-color: #fff;
+                margin-top: 20px;
+                padding: 4px;
+            }
+
+            .footer-table {
+                width: 570px;
+            }
+
+            .logo {
+                background-color: #f8f8f8;
+            }
+            
+            .logo img {
+                padding: 20px 20px 20px 10px;
+            }
+
+            .header {
+                background-color: #26547c;
+                height: 50px;
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .programterulet {
+                background-color: #f8f8f8;
+                height: 50px;
+                color: #26547c;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            span.spacer {
+                background-color: #517696;
+                display: inline-block;
+                height: 15px;
+                position: relative;
+                top: 1px;
+                width: 2px;
+                padding-left: 0;
+            }
+
+            p span {
+                display: inline-block;
+                padding-left: 10px;
+            }
+
+            p span.title {
+                padding-right: 10px;
+            }
+            
+            .header span.date {
+                color: #5990bf;
+            }
+
+            .footer-table p {
+                color: #999;
+                line-height: 20px;
+                text-align: center;
+            }
+
+            .footer-table p a {
+                color: #333;
+                text-decoration: none;
+            }
+
+            .footer-table p a:hover {
+                text-decoration: underline;
+            }
+
+            p.footer {
+                color: #333;
+            }
+
+            td.footer-line {
+                border-top: 1px solid #e8e8e8;
+            }
+
+            .footer-info {
+                background-color: #f8f8f8;
+                height: 100px;
+                color: #333;
+                font-size: 14px;
+            }
+
+            .footer-info p {
+                padding-left: 10px;
+                line-height: 20px;
+            }
+
+            .footer-info a {
+                color: #c41230;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+            .footer-info a:hover {
+                text-decoration: underline;
+            }
+            
+            .header img {
+                padding-right: 12px;
+            }
+                        
+            .greetings p {
+                color: #999;
+                font-size: 14px;
+                font-style: italic;
+                padding: 10px 0 15px 10px;
+                border-top: 1px solid #f8f8f8;
+            }
+            .content{
+                padding:10px;
+            }
+            .content a{
+                text-decoration: none;
+                color:#c41230;
+            }
+        </style>
+    </head>
+    <body>
+        <table border="0" align="center" class="main-table">
+            <tr>
+                <th colspan="2" class="logo" align="left">
+                    <a href="http://www.norvegalap.hu" target="_blank"><img src="http://norvegalap.webstar.hu/documents/10179/16011/H%C3%ADrlev%C3%A9l+log%C3%B3%20magyar/f35a2654-3591-4bba-8ab8-f56750351d2d?t=1366180703915" alt="logo"/></a>
+                </th>
+            </tr>
+            <tr class="header">
+                <td colspan="2">
+                    <p>
+                        <span class="title">###newsletterTitle###</span>
+                        <span class="spacer"></span>
+                        <span class="date">###sendDate###</span>
+                        <a href="https://www.facebook.com/pages/Norv%C3%A9g-Alap-EGT-Alap/171291003019533" target="_blank"><img align="right" src="http://norvegalap.webstar.hu/documents/10179/16011/H%C3%ADrlev%C3%A9l+facebook+ikon/52962a83-174d-43be-9d31-a1e819bb12cb?t=1366180722525" alt="facebook"/></a>
+                        <a href="https://twitter.com/NORVEG_EGT_ALAP" target="_blank"><img align="right" src="http://norvegalap.webstar.hu/documents/10179/16011/H%C3%ADrlev%C3%A9l+twitter+ikon/44a7b524-8d96-4f85-9cc9-935f361f7af3?t=1366180739743" alt="twitter" /></a>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="programterulet">
+                    <p><span>###newsletterCategory###</span></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="content">###CONTENT###</td>
+            </tr>
+            <tr class="greetings">
+                <td colspan="2">
+                    <p>Üdvözlettel a Norvég Alap és EGT Alap munkatársai!</p>
+                </td>
+            </tr>
+            <tr class="footer-info">
+                <td width="50%"><p>Bővebb információért<br /> látogasson el weboldalunkra<br /><a href="http://www.norvegalap.hu">www.norvegalap.hu</a></p></td>
+                <td width="50%"><p>Hírlevelünkről leiratkozhat<br /> az alábbi linkre kattintva<br /><a href="###portalUrl###/###cancelattionLink###">Leiratkozás</a></p></td>
+            </tr>
+        </table>
+        <table align="center" class="footer-table">
+            <tr>
+                <td>
+                    <p>
+                        Nemzetközi Fejlesztési és Forráskoordinációs Ügynökség Zrt.<br />
+                        A Norvég Alap és az EGT Alap Végrehajtó Ügynöksége <br />
+                        Cím: 1037 Budapest, Montevideo utca 16/a fszt. 1. <br />
+                        E-mail: <a href="mailto:info@norvegalap.hu">info@norvegalap.hu</a>, <a href="mailto:info@egtalap.hu">info@egtalap.hu</a>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td class="footer-line">
+                    <p class="footer">
+                        Ezen levél egy automatikus üzenet, kérem ne válaszoljon rá!
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

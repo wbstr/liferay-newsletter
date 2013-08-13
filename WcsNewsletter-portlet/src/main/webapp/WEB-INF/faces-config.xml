@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.0">
+
+    <application>
+        <message-bundle>Messages</message-bundle>
+        <resource-bundle>
+            <base-name>Messages</base-name>
+            <var>messages</var>
+        </resource-bundle> 
+        <locale-config>
+            <default-locale>en_US</default-locale>
+            <supported-locale>hu_HU</supported-locale>
+            <supported-locale>en_US</supported-locale>
+            <supported-locale>en_GB</supported-locale>
+        </locale-config>        
+    </application> 
+    
+    <navigation-rule>
+        <from-view-id>/view/admin/categoryList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/view/admin/categoryEdit.xhtml</to-view-id>          
+        </navigation-case>
+    </navigation-rule>  
+    <navigation-rule>
+        <from-view-id>/view/admin/categoryEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>list</from-outcome>
+            <to-view-id>/view/admin/categoryList.xhtml</to-view-id>          
+        </navigation-case>
+    </navigation-rule>  
+        
+    <navigation-rule>
+        <from-view-id>/view/admin/subscriptionList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/view/admin/subscriptionEdit.xhtml</to-view-id>          
+        </navigation-case>
+    </navigation-rule> 
+    <navigation-rule>
+        <from-view-id>/view/admin/subscriptionEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>list</from-outcome>
+            <to-view-id>/view/admin/subscriptionList.xhtml</to-view-id>          
+        </navigation-case>
+    </navigation-rule>    
+    <navigation-rule>
+        <from-view-id>/view/admin/newsletterList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/view/admin/newsletterEdit.xhtml</to-view-id>          
+        </navigation-case>
+    </navigation-rule>  
+    <navigation-rule>
+        <from-view-id>/view/admin/newsletterEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>list</from-outcome>
+            <to-view-id>/view/admin/newsletterList.xhtml</to-view-id>          
+        </navigation-case>
+    </navigation-rule>  
+                                                                                                                                                                                                                                                                                                                                                                                                
+    <lifecycle>
+        <phase-listener>com.liferay.faces.util.lifecycle.DebugPhaseListener</phase-listener>
+        <phase-listener>com.liferay.faces.util.lifecycle.ViewScopePhaseListener</phase-listener>
+    </lifecycle>
+    
+    
+     <factory>
+        <exception-handler-factory>com.wcs.newsletter.util.WcsExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+</faces-config>
+

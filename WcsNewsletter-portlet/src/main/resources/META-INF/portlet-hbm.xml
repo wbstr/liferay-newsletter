@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="com.wcs.newsletter.model.Category" />
+	<import class="com.wcs.newsletter.model.Label" />
+	<import class="com.wcs.newsletter.model.Newsletter" />
+	<import class="com.wcs.newsletter.model.NewsletterConfig" />
+	<import class="com.wcs.newsletter.model.Recipient" />
+	<import class="com.wcs.newsletter.model.Subscription" />
+	<import class="com.wcs.newsletter.model.SubscriptionCategory" />
+	<class name="com.wcs.newsletter.model.impl.CategoryImpl" table="WcsNewsletter_Category">
+		<cache usage="read-write" />
+		<id name="categoryId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="locale" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.wcs.newsletter.model.impl.LabelImpl" table="WcsNewsletter_Label">
+		<cache usage="read-write" />
+		<id name="labelId" type="long">
+			<generator class="identity" />
+		</id>
+		<property name="tagId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.wcs.newsletter.model.impl.NewsletterImpl" table="WcsNewsletter_Newsletter">
+		<cache usage="read-write" />
+		<id name="newsletterId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="subject" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sender" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="contentId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="contentVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="templateId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="templateVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="parentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="creationTime" type="org.hibernate.type.TimestampType" />
+		<property name="state" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.wcs.newsletter.model.impl.NewsletterConfigImpl" table="WcsNewsletter_NewsletterConfig">
+		<cache usage="read-write" />
+		<id name="configId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="configKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="configValue" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.wcs.newsletter.model.impl.RecipientImpl" table="WcsNewsletter_Recipient">
+		<cache usage="read-write" />
+		<id name="recipientId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="newsletterId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="email" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="errorMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.wcs.newsletter.model.impl.SubscriptionImpl" table="WcsNewsletter_Subscription">
+		<cache usage="read-write" />
+		<id name="subscriptionId" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="email" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="subscriptionDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.wcs.newsletter.model.impl.SubscriptionCategoryImpl" table="WcsNewsletter_Subscription_Category">
+		<cache usage="read-write" />
+		<composite-id name="primaryKey" class="com.wcs.newsletter.service.persistence.SubscriptionCategoryPK">
+			<key-property name="subscriptionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+			<key-property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		</composite-id>
+		<property name="confirmationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="cancellationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+</hibernate-mapping>

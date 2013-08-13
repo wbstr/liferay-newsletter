@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.wcs.newsletter.service.CategoryLocalService" class="com.wcs.newsletter.service.impl.CategoryLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.CategoryPersistence" class="com.wcs.newsletter.service.persistence.CategoryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.wcs.newsletter.service.LabelLocalService" class="com.wcs.newsletter.service.impl.LabelLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.LabelPersistence" class="com.wcs.newsletter.service.persistence.LabelPersistenceImpl" parent="basePersistence" />
+	<bean id="com.wcs.newsletter.service.NewsletterLocalService" class="com.wcs.newsletter.service.impl.NewsletterLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.NewsletterPersistence" class="com.wcs.newsletter.service.persistence.NewsletterPersistenceImpl" parent="basePersistence" />
+	<bean id="com.wcs.newsletter.service.NewsletterConfigLocalService" class="com.wcs.newsletter.service.impl.NewsletterConfigLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.NewsletterConfigPersistence" class="com.wcs.newsletter.service.persistence.NewsletterConfigPersistenceImpl" parent="basePersistence" />
+	<bean id="com.wcs.newsletter.service.RecipientLocalService" class="com.wcs.newsletter.service.impl.RecipientLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.RecipientPersistence" class="com.wcs.newsletter.service.persistence.RecipientPersistenceImpl" parent="basePersistence" />
+	<bean id="com.wcs.newsletter.service.SubscriptionLocalService" class="com.wcs.newsletter.service.impl.SubscriptionLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.SubscriptionPersistence" class="com.wcs.newsletter.service.persistence.SubscriptionPersistenceImpl" parent="basePersistence" />
+	<bean id="com.wcs.newsletter.service.SubscriptionCategoryLocalService" class="com.wcs.newsletter.service.impl.SubscriptionCategoryLocalServiceImpl" />
+	<bean id="com.wcs.newsletter.service.persistence.SubscriptionCategoryPersistence" class="com.wcs.newsletter.service.persistence.SubscriptionCategoryPersistenceImpl" parent="basePersistence" />
+</beans>

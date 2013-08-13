@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:head>
+        <script type="text/javascript">
+            //<![CDATA[
+            function oncompleteDefaultHandler(data){       
+                cHT=data;
+                if(data.childNodes == undefined){
+                    location.reload();
+                }
+            }            
+            
+            var originalPrimeFacesAjaxUtilsSend = PrimeFaces.ajax.AjaxUtils.send;           
+            PrimeFaces.ajax.AjaxUtils.send = function(cfg) {
+                if (!cfg.oncomplete) {
+                    cfg.oncomplete = oncompleteDefaultHandler;
+                }
+                originalPrimeFacesAjaxUtilsSend.apply(this, arguments);
+            };
+            //]]>
+        </script>
+    </h:head>    
+    <h:body styleClass="WcsNewsletter">        
+        <f:view contentType="text/html" locale="#{navigationController.getLiferayFullLangCode()}" id="rootView">
+            <p:growl autoUpdate="true" sticky="false" />
+            <p:tabView id="adminTabView" dynamic="true" >
+                <p:ajax event="tabChange" onerror="oncompleteDefaultHandler(this)"/>
+               
+                <p:tab title="#{messages.admin_menu_categories}">                  
+                    <ui:include src="/WEB-INF/facelets/admin/categoryTab.xhtml" />
+                </p:tab>
+                <p:tab title="#{messages.admin_menu_newsletters}">
+                    <ui:include src="/WEB-INF/facelets/admin/newsletterTab.xhtml" />
+                </p:tab>
+                <p:tab title="#{messages.admin_menu_users}">
+                    <ui:include src="/WEB-INF/facelets/admin/subscriptionTab.xhtml" />
+                </p:tab>
+                <p:tab title="#{messages.admin_menu_config}">
+                    <ui:include src="/WEB-INF/facelets/admin/subscriptionConfig.xhtml" />
+                </p:tab>
+            </p:tabView>                
+        </f:view>
+    </h:body>    
+</html>

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<f:view
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:aui="http://liferay.com/faces/aui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:bridge="http://liferay.com/faces/bridge"
+    xmlns:p="http://primefaces.org/ui"
+    >
+    <h:head>
+
+    </h:head>
+    <h:body>   
+        <f:view contentType="text/html" locale="#{navigationController.getLiferayFullLangCode()}" id="rootView">
+            <script type="text/javascript">
+                jQuery.noConflict();                              
+                $(function(){
+                    createSelectMenu();             
+                });
+                function createSelectMenu(){
+                        
+                    $(".multiWebstarSelect").multiselect({
+                        header: false,
+                        noneSelectedText:"#{messages.choose_category}",
+                        autoOpen:false,
+                        selectedText:"#{messages.choose_category}"
+                    });    
+                }
+                createSelectMenu();
+            
+            </script>
+
+            <f:event type="preRenderView" listener="#{subscriptionController.initController()}"/>
+
+            <h:form  styleClass="subscriptionFormContainer" id="subscriptionForm" rendered="#{subscriptionController.hasCategoryByLocale}" >     
+
+                <h:messages globalOnly="true" infoClass="portlet-msg-success" />
+                <h:message styleClass="emailMess" for="email" />  
+                <h:message styleClass="catMess" for="subscriptions" />   
+                <h:outputLabel for="email" value="#{messages.admin_subscriptions_email}" />
+                <h:inputText styleClass="newsletter-text" id="email" readonly="#{subscriptionController.activeUser!=null}" required="true" requiredMessage="#{messages.subscription_addEmail}"
+                             validatorMessage="#{messages.subscription_invalidEmail}" value="#{subscriptionController.email}">
+                    <f:validateRegex
+                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </h:inputText>     
+                <h:outputLabel for="subscriptions" value="#{messages.admin_subscriptions_categories} " rendered="#{!subscriptionController.hasDefaultCategoryByLocale}" />
+                <h:selectManyListbox required="true" requiredMessage="#{messages.subscription_chooseCat}" styleClass="multiWebstarSelect" id="subscriptions" value="#{subscriptionController.selectedCategories}" rendered="#{!subscriptionController.hasDefaultCategoryByLocale}">
+                    <f:selectItems itemLabel="#{category.name}" itemValue="#{category.categoryId}" var="category" value="#{subscriptionController.categoryList}"/>
+                </h:selectManyListbox>
+                <h:commandButton styleClass="newsletter-button"  actionListener="#{subscriptionController.saveSubscription()}" value="#{messages.admin_general_ok}">  
+                    <f:ajax execute="@form" render="@form" />
+                </h:commandButton>
+
+                <script type="text/javascript">                
+                    createSelectMenu();
+                </script>
+                <br clear="all" />
+
+            </h:form>   
+
+            <h:form id="subscriptionErrorForm" rendered="#{!subscriptionController.hasCategoryByLocale}" >       
+                <p:panel>Nincsen hírlevél kategória ezen a nyelven!</p:panel>
+            </h:form>   
+        </f:view>
+    </h:body>
+</f:view>
+

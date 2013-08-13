@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <p:panel id="categoryTabPanel" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+        <p:panel id="categoryListPanel" rendered="#{!categoryTabWrapperController.editView}" style="border:none; border-radius: 0;padding:0;margin: 0px;">
+            <h:form id="categoryListForm">
+               
+                <f:event type="preRenderView" listener="#{categoryListController.initController()}"/>
+                <f:event type="preRenderView" listener="#{categoryEditController.initController()}"/>
+
+                <p:outputPanel>
+                    <p:dataTable 
+                        id="categoryListTable" 
+                        var="category" 
+                        value="#{categoryListController.model}"
+                        rowIndexVar="rowKey"
+                        selection="#{categoryListController.selectedElems}"
+                        sortBy="#{category.name}" 
+                        sortFunction="#{sortTools.sort}"                
+                        paginator="true"
+                        rows="10"
+                        rowsPerPageTemplate="10,25,50,100"  
+                        paginatorPosition="bottom"
+                        emptyMessage="#{messages.admin_general_empty_list}"
+                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                        currentPageReportTemplate="#{messages.admin_general_pagerCurrentPageReportTemplate}" 
+                        styleClass="marginTopBottom listTable"
+                        widgetVar="categoryTable"   
+                        >  
+
+                        <p:column selectionMode="multiple" id="multiselect" styleClass="selectorColumn" >  
+
+                        </p:column>                    
+
+                        <p:column headerText="#{messages.admin_categories_category_name}" sortBy="#{category.name}" sortFunction="#{sortTools.sort}" filterBy="#{category.name}" filterMatchMode="contains">  
+                            <h:outputText value="#{category.name}" />  
+                        </p:column>                 
+
+                        <p:column headerText="#{messages.admin_categories_category_lang}" sortBy="#{category.localizedLocaleStr}" sortFunction="#{sortTools.sort}" filterBy="#{category.localeStr}" filterOptions="#{categoryListController.localeOptions}" filterMatchMode="exact">  
+                            <h:outputText value="#{category.localizedLocaleStr}" />  
+                        </p:column>                   
+
+                        <p:column headerText="#{messages.admin_categories_subscribed}" sortBy="#{category.subscribed}" sortFunction="#{sortTools.sort}" filterBy="#{category.subscribed}" filterMatchMode="startsWith" styleClass="shortColumn">  
+                            <h:outputText value="#{category.subscribed}" />  
+                        </p:column>                
+
+                        <p:column styleClass="actionColumn"> 
+                            <p:menuButton value="#{messages.admin_general_actions}" style="float:right;">  
+                                <p:menuitem value="#{messages.admin_general_edit}" update=":adminTabView:categoryTabPanel" actionListener="#{categoryTabWrapperController.editCategory(category)}">
+
+                                </p:menuitem>
+                                <p:menuitem value="#{messages.admin_categories_subscriptions}"  update=":adminTabView:categoryListForm:editorDlgUser" oncomplete="editorDlgUser.show()" actionListener="#{categoryListController.generateUserList(category)}" />  
+                            </p:menuButton>                      
+                        </p:column>                   
+                    </p:dataTable>  
+                    <h:panelGroup>
+                        <p:commandButton value="#{messages.admin_categories_new_category}" update=":adminTabView:categoryTabPanel" action="#{categoryTabWrapperController.createCategory()}" styleClass="marginRight">                            
+                        </p:commandButton>
+                        <p:commandButton value="#{messages.admin_categories_delete_category}" onclick="deleteConfirmation.show();" type="button" />
+                    </h:panelGroup>
+                </p:outputPanel>
+
+                <p:confirmDialog
+                    id="deleteConfirmationDialog" 
+                    message="#{messages.admin_general_delete_confirm_question}"  
+                    header="#{messages.admin_general_delete}" 
+                    severity="alert" 
+                    widgetVar="deleteConfirmation">  
+
+                    <p:commandButton id="confirm" value="#{messages.admin_general_yes}" update="@form" oncomplete="deleteConfirmation.hide()" actionListener="#{categoryListController.delete()}" />  
+                    <p:commandButton id="decline" value="#{messages.admin_general_no}" onclick="deleteConfirmation.hide()" type="button" />   
+
+                </p:confirmDialog>              
+                <p:dialog id="editorDlgUser" widgetVar="editorDlgUser" closeOnEscape="true"  header="#{messages.admin_general_subscriptionlist}" resizable="true"
+                          dynamic="false" modal="true">  
+                    <p:dataTable value="#{categoryListController.userList}"
+                                 var="wc" id="userListTable"
+                                 rowKey="#{wc.subscription.subscriptionId}"                                 
+                                 widgetVar="userList"
+                                 styleClass="higherTd"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                 
+                                 style="margin-top: 15px;">                  
+                        <p:column headerText="#{messages.admin_general_email}" style="text-align: center;" filterBy="#{wc.subscription.emailString}" filterMatchMode="contains">
+                            <h:outputText value="#{wc.subscription.emailString}" />
+                        </p:column>
+                        <p:column headerText="#{messages.admin_categories_category_confirmed}" style="text-align: center;">
+                            <h:outputText value="#{categoryListController.getStatForSubs(wc.subscriptionCategory.status)}" />
+                        </p:column>
+                    </p:dataTable> 
+                </p:dialog>
+            </h:form>
+        </p:panel>
+        <p:panel id="categoryEditPanel" rendered="#{categoryTabWrapperController.editView}">
+            <h:form id="categoryEditForm">
+                <p:panelGrid columns="1" styleClass="panelGrid" >
+                    <h:outputText value="#{messages.admin_categories_category_name}:" styleClass="outputText" />
+                    <h:inputText id="name" value="#{categoryEditController.elem.name}" required="true" label="#{messages.admin_categories_category_name}" styleClass="inputText" />
+
+                    <h:outputText value="#{messages.admin_categories_category_locale}:" styleClass="outputText" />
+                    <p:selectOneMenu id="locale" value="#{categoryEditController.elem.locale}">
+                        <f:selectItems value="#{categoryEditController.availableLocales}" var="locale" itemValue="#{locale.toString()}" itemLabel="#{locale.displayName}" />
+                    </p:selectOneMenu>
+
+                    <h:panelGroup>
+                        <p:commandButton value="#{messages.admin_general_ok}" actionListener="#{categoryEditController.save()}" onsuccess="backToCategoryListOnSave()" update="@form" styleClass="marginRight" />                            
+                        <p:commandButton value="#{messages.admin_general_back}" action="#{categoryTabWrapperController.backToList()}" update=":adminTabView:categoryTabPanel" immediate="true"/>    
+                        <p:remoteCommand actionListener="#{categoryTabWrapperController.backToList()}" name="backToCategoryListOnSave" update=":adminTabView:categoryTabPanel" />
+                    </h:panelGroup>                    
+                </p:panelGrid>  
+                <p:growl autoUpdate="true" sticky="false" />
+            </h:form>
+        </p:panel>              
+    </p:panel>
+</ui:composition>

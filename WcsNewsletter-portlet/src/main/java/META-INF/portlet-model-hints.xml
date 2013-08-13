@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.wcs.newsletter.model.Category">
+		<field name="categoryId" type="long" />
+		<field name="name" type="String" />
+		<field name="locale" type="String" />
+	</model>
+	<model name="com.wcs.newsletter.model.EmailTemplate">
+		<field name="emailTemplateId" type="long" />
+		<field name="fileEntryId" type="long" />
+	</model>
+	<model name="com.wcs.newsletter.model.Label">
+		<field name="labelId" type="long" />
+		<field name="tagId" type="long" />
+	</model>
+	<model name="com.wcs.newsletter.model.Newsletter">
+		<field name="newsletterId" type="long" />
+		<field name="subject" type="String" />
+		<field name="sender" type="String" />
+		<field name="contentId" type="String" />
+		<field name="contentVersion" type="String" />
+		<field name="templateId" type="String" />
+		<field name="templateVersion" type="String" />
+		<field name="parentId" type="long" />
+		<field name="creationTime" type="Date" />
+		<field name="state" type="String" />
+	</model>
+	<model name="com.wcs.newsletter.model.NewsletterConfig">
+		<field name="configId" type="long" />
+		<field name="configKey" type="String" />
+		<field name="configValue" type="String" />
+	</model>
+	<model name="com.wcs.newsletter.model.Recipient">
+		<field name="recipientId" type="long" />
+		<field name="newsletterId" type="long" />
+		<field name="email" type="String" />
+		<field name="status" type="String" />
+		<field name="errorMessage" type="String" />
+	</model>
+	<model name="com.wcs.newsletter.model.Subscription">
+		<field name="subscriptionId" type="long" />
+		<field name="userId" type="long" />
+		<field name="email" type="String" />
+		<field name="subscriptionDate" type="Date" />
+	</model>
+	<model name="com.wcs.newsletter.model.SubscriptionCategory">
+		<field name="subscriptionId" type="long" />
+		<field name="categoryId" type="long" />
+		<field name="confirmationKey" type="String" />
+		<field name="cancellationKey" type="String" />
+		<field name="status" type="String" />
+	</model>
+</model-hints>

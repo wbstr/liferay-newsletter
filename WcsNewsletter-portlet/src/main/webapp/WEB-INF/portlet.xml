@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+
+<portlet-app
+    version="2.0"
+    xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd">
+    <portlet>
+        <portlet-name>webstar-newsletter-admin</portlet-name>
+        <display-name>Webstar Newsletter Admin</display-name>        
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>         
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view/admin/main.xhtml</value>
+        </init-param>     
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>       
+        <portlet-info>
+            <title>Webstar Newsletter Admin</title>
+            <short-title>Webstar Newsletter Admin</short-title>
+            <keywords>Webstar Newsletter Admin</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>    
+    <portlet>
+        <portlet-name>webstar-newsletter-subscription</portlet-name>
+        <display-name>Webstar Newsletter Subscription</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view/subscribe/subscription.xhtml</value>
+        </init-param>            
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Webstar Newsletter Subcription</title>
+            <short-title>Webstar Newsletter Subcription</short-title>
+            <keywords>Webstar Newsletter Subcription</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>    
+    <portlet>
+        <portlet-name>webstar-newsletter-subscription-jquery</portlet-name>
+        <display-name>Webstar Newsletter Subscription Jquery</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view/subscribe/subscriptionMulti.xhtml</value>
+        </init-param>            
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Webstar Newsletter Subcription Jquery</title>
+            <short-title>Webstar Newsletter Subcription Jquery</short-title>
+            <keywords>Webstar Newsletter Subcription Jquery</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>    
+     <portlet>
+        <portlet-name>webstar-newsletter-subscription-action</portlet-name>
+        <display-name>Webstar Newsletter Subscription Action</display-name>
+        <portlet-class>javax.portlet.faces.GenericFacesPortlet</portlet-class>
+        <init-param>
+            <name>javax.portlet.faces.defaultViewId.view</name>
+            <value>/view/subscribe/subscriptionAction.xhtml</value>
+        </init-param>            
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        <portlet-info>
+            <title>Webstar Newsletter Subcription -Action</title>
+            <short-title>Webstar Newsletter Subcription Action</short-title>
+            <keywords>Webstar Newsletter Subcription Action</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>    
+</portlet-app>
