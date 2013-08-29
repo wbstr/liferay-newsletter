@@ -29,7 +29,7 @@
                     <f:validateRegex
                         pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                 </h:inputText>   
-                <h:outputLabel for="subscriptions" value="Kategória: " />
+                <h:outputLabel for="subscriptions" value="#{messages.admin_subscriptions_categories} " rendered="#{!subscriptionController.hasDefaultCategoryByLocale}" />
                 <h:selectManyListbox  required="true" requiredMessage="#{messages.subscription_chooseCat}" styleClass="multiWebstarSelect" id="subscriptions" value="#{subscriptionController.selectedCategories}" rendered="#{!subscriptionController.hasDefaultCategoryByLocale}">
                     <f:selectItems itemLabel="#{category.name}" itemValue="#{category.categoryId}" var="category" value="#{subscriptionController.categoryList}"/>
                 </h:selectManyListbox>
@@ -42,7 +42,7 @@
             </h:form>   
 
             <h:form id="subscriptionErrorForm" rendered="#{!subscriptionController.hasCategoryByLocale}" >       
-                <p:panel>Nincsen hírlevél kategória ezen a nyelven!</p:panel>
+                <p:panel>#{messages.subscription_noCategory}</p:panel>
             </h:form>            
         </f:view>
     </h:body>
