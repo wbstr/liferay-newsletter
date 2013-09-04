@@ -13,7 +13,7 @@
     <properties>
         <liferay.version>6.1.1</liferay.version>
         <liferay.maven.plugin.version>6.1.1</liferay.maven.plugin.version>
-        <liferay.faces.version>3.1.2-ga3</liferay.faces.version>
+        <liferay.faces.version>3.1.3-ga4-SNAPSHOT</liferay.faces.version>
         <mojarra.version>2.1.20</mojarra.version>
         <primefaces.version>3.5</primefaces.version>
         <primefaces.extension.version>0.7.0</primefaces.extension.version>
