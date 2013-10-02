@@ -144,7 +144,7 @@ public class ConfigController extends AbstractController {
  
 
     @Override
-    public void initController() {
+    public void initController() {        
         initConfigs();
     }
 

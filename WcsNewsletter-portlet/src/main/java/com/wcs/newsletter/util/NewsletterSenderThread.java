@@ -68,8 +68,9 @@ public class NewsletterSenderThread implements Runnable {
                 cancLink = rcpt.getNewsletterSubscriptionCategory().getCancellationKey();
             }
             body = body.replace("###newsletterCategory###", rcpt.getCategoryName());
-            body = body.replace("###portalUrl###", themeDisplay.getURLPortal());
-            body = body.replace("###cancelattionLink###", "subscription?canckey=" + cancLink);
+            //body = body.replace("###portalUrl###", themeDisplay.getURLPortal());
+            body = body.replace("###portalUrl###", themeDisplay.getURLHome()); //web/quest is needed
+            body = body.replace("###cancelattionLink###", "subscription?"+EmailConst.Action.CANCEL_PARAM_KEY+"=" + cancLink);
             mailMessage.setBody(body);
             mailMessage.setHTMLFormat(sendHtml);
             mailMessage.setFrom(from);
