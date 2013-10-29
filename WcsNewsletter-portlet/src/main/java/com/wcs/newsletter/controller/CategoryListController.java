@@ -32,6 +32,7 @@ import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.service.SubscriptionCategoryLocalServiceUtil;
 import com.wcs.newsletter.util.AppMessageBundle;
 import com.wcs.newsletter.util.LiferayUtil;
+import com.wcs.newsletter.util.WcsNewsletterConst;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -136,7 +137,7 @@ public class CategoryListController extends AbstractListController<CategoryListE
         //TODO PS: delete subscriptioncategories
     }
 
-    public boolean canDelete() {        
+    public boolean canDelete() {
         return selectedElems.length > 0;
     }
 
@@ -224,5 +225,28 @@ public class CategoryListController extends AbstractListController<CategoryListE
 
     public void resetController() {
         model = null;
+    }
+
+    @Override
+    public void delete() {
+        super.delete();
+        if (selectedElems == null) {
+            logger.info("no selectedElems");
+            return;
+        }
+
+        Object[] deletedCategoryList = selectedElems;
+        for (int i = 0; i < deletedCategoryList.length; i++) {
+            try {
+                CategoryListElem deletedCategory = (CategoryListElem) deletedCategoryList[i];
+
+                List<SubscriptionCategory> sCList = SubscriptionCategoryLocalServiceUtil.findByCategoryId(deletedCategory.getId());
+                for (SubscriptionCategory sC : sCList) {
+                    SubscriptionCategoryLocalServiceUtil.deleteSubscriptionCategory(sC);
+                }
+            } catch (SystemException ex) {
+                Logger.getLogger(CategoryListController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

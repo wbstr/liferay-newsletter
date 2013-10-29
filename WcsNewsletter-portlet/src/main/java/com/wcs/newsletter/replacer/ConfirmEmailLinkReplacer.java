@@ -22,10 +22,19 @@ package com.wcs.newsletter.replacer;
  * #L%
  */
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
+import com.liferay.portal.util.PortalUtil;
+import com.wcs.newsletter.model.NewsletterConfig;
+import com.wcs.newsletter.service.NewsletterConfigLocalServiceUtil;
 import com.wcs.newsletter.util.EmailConst;
 import com.wcs.newsletter.util.LiferayUtil;
 import com.wcs.tool.ListUtil;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ConfirmEmailLinkReplacer extends AbstractEmailReplacer {
@@ -46,32 +55,48 @@ public class ConfirmEmailLinkReplacer extends AbstractEmailReplacer {
         return getConfirmationLink();
     }
 
-    private String getConfirmationLink() {
-        if (ListUtil.isEmpty(confirmationKeys)) {
-            return null;
-        }
-        
-        StringBuilder body = new StringBuilder();
-        body.append("<a href=\"");
-        body.append(LiferayUtil.getThemeDisplay().getURLPortal());
-        body.append("/subscription?");
-        
-        for (int i = 0; i < confirmationKeys.size(); i++) {
-            String confirmationKey = confirmationKeys.get(i);
-   
-            if (i > 0) {
-                body.append("&");            
+    private String getConfirmationLink() throws PortalException {
+        try {
+            if (ListUtil.isEmpty(confirmationKeys)) {
+                return null;            
             }
-            body.append(EmailConst.Action.CONFIRM_PARAM_KEY).append("=").append(confirmationKey);        
-        }
-        
-        body.append("\">");
-        body.append("Megerősít/Confirm");
-        body.append("</a>");
+            
+            StringBuilder body = new StringBuilder();
+            body.append("<a href=\"");
+            List<NewsletterConfig> configs = NewsletterConfigLocalServiceUtil.findByConfigKey("subscriptionActionLayout");
+                NewsletterConfig subscriptionActionLayout;
+                subscriptionActionLayout = configs.get(0);
+                Layout layout = null;
+                layout = LayoutLocalServiceUtil.getLayout(Long.parseLong(subscriptionActionLayout.getConfigValue()));
+//                layout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(subscriptionActionLayout.getConfigValue(), LiferayUtil.getThemeDisplay().getScopeGroupId());
+//                layout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(subscriptionActionLayout.getConfigValue(), LiferayUtil.getThemeDisplay().getScopeGroupId(),false);
+                String layoutURL = PortalUtil.getLayoutURL(layout, LiferayUtil.getThemeDisplay());
+              
+            body.append(LiferayUtil.getThemeDisplay().getURLPortal());
+//            body.append("/subscription?");
+              body.append(layoutURL);
+              body.append("?");
+         
+            for (int i = 0; i < confirmationKeys.size(); i++) {
+                String confirmationKey = confirmationKeys.get(i);
+       
+                if (i > 0) {
+                    body.append("&");            
+                }
+                body.append(EmailConst.Action.CONFIRM_PARAM_KEY).append("=").append(confirmationKey);        
+            }
+            
+            body.append("\">");
+            body.append("Megerősít/Confirm");
+            body.append("</a>");
 
-        body.append("<br />");    
-        
-        return new String(body);
+            body.append("<br />");    
+            
+            return new String(body);
+        } catch (SystemException ex) {
+            Logger.getLogger(ConfirmEmailLinkReplacer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
     }    
     
     

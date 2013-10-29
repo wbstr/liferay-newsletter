@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.wcs</groupId>
         <artifactId>WcsNewsletter</artifactId>
-        <version>1.0.0.1</version>
+        <version>1.0.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <artifactId>WcsNewsletter-portlet</artifactId>
     <packaging>war</packaging>
     <name>WcsNewsletter Portlet</name>
-    <version>1.0.0.1</version>
+    <version>1.0.0.2</version>
     <build>
         <plugins>
             <plugin>

@@ -29,12 +29,24 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.LayoutConstants;
+import com.liferay.portal.security.permission.ActionKeys;
+
+import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
 
 
 
 
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.LayoutLister;
+import com.liferay.portal.util.LayoutView;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
@@ -46,10 +58,14 @@ import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLSyncLocalServiceUtil;
 import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.NewsletterConfig;
+import com.wcs.newsletter.model.Subscription;
+import com.wcs.newsletter.model.SubscriptionCategory;
 import com.wcs.newsletter.model.impl.CategoryImpl;
 import com.wcs.newsletter.model.impl.NewsletterConfigImpl;
 import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.service.NewsletterConfigLocalServiceUtil;
+import com.wcs.newsletter.service.SubscriptionCategoryLocalServiceUtil;
+import com.wcs.newsletter.util.AppMessageBundle;
 import com.wcs.newsletter.util.LiferayUtil;
 import java.io.File;
 
@@ -61,10 +77,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -76,11 +94,30 @@ import org.apache.commons.io.IOUtils;
 public class ConfigController extends AbstractController {
 
     private static final String SAVE_SUCCESS = "admin_newsletters_save_success";
+    private static final String CLEAR_SUCCESS = "admin_newsletters_clear_success";
     private boolean updateTemplate;
     private List<FileEntry> templateList;
-    private FileEntry selectedTemplate;  
+    private FileEntry selectedTemplate;
     private boolean syncUsers;
     private boolean installedDefaults;
+    private SelectItem[] layoutsForSelect;
+    private String selectedLayout;
+
+    public String getSelectedLayout() {
+        return selectedLayout;
+    }
+
+    public void setSelectedLayout(String selectedLayout) {
+        this.selectedLayout = selectedLayout;
+    }
+
+    public SelectItem[] getLayoutsForSelect() {
+        return layoutsForSelect;
+    }
+
+    public void setLayoutsForSelect(SelectItem[] layoutsForSelect) {
+        this.layoutsForSelect = layoutsForSelect;
+    }
 
     public boolean isInstalledDefaults() {
         return installedDefaults;
@@ -89,8 +126,6 @@ public class ConfigController extends AbstractController {
     public void setInstalledDefaults(boolean installedDefaults) {
         this.installedDefaults = installedDefaults;
     }
-
-   
 
     public void save() {
         try {
@@ -124,6 +159,21 @@ public class ConfigController extends AbstractController {
                 syncUserConfig.setConfigValue(syncUsers ? "1" : "0");
                 NewsletterConfigLocalServiceUtil.updateNewsletterConfig(syncUserConfig);
             }
+
+            //configs
+            configs = NewsletterConfigLocalServiceUtil.findByConfigKey("subscriptionActionLayout");
+            NewsletterConfig subscriptionActionLayout;
+
+            if (configs.isEmpty()) {
+                subscriptionActionLayout = new NewsletterConfigImpl();
+                subscriptionActionLayout.setConfigKey("subscriptionActionLayout");
+                subscriptionActionLayout.setConfigValue(selectedLayout);
+                NewsletterConfigLocalServiceUtil.addNewsletterConfig(subscriptionActionLayout);
+            } else {
+                subscriptionActionLayout = configs.get(0);
+                subscriptionActionLayout.setConfigValue(selectedLayout);
+                NewsletterConfigLocalServiceUtil.updateNewsletterConfig(subscriptionActionLayout);
+            }
             //end configs
 
             addSuccessMessage(SAVE_SUCCESS);
@@ -141,10 +191,9 @@ public class ConfigController extends AbstractController {
         this.syncUsers = syncUsers;
     }
 
- 
-
     @Override
-    public void initController() {        
+    public void initController() {
+        listLayouts();
         initConfigs();
     }
 
@@ -168,6 +217,8 @@ public class ConfigController extends AbstractController {
                 if (!updateTemplate) {
                     selectedTemplate = DLAppServiceUtil.getFileEntry(Long.valueOf(configMap.get("emailTemplate")));
                 }
+                selectedLayout = "";
+                selectedLayout = configMap.get("subscriptionActionLayout");
             }
         } catch (PortalException ex) {
             Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
@@ -232,7 +283,8 @@ public class ConfigController extends AbstractController {
             ServiceContext serviceContext = new ServiceContext();
             serviceContext.setScopeGroupId(folder.getGroupId());
             serviceContext.setAddGuestPermissions(true);
-            
+            serviceContext.setGuestPermissions(new String[]{ActionKeys.ACCESS});
+
             long syncId = CounterLocalServiceUtil.increment();
             DLSync foldersSync = DLSyncLocalServiceUtil.createDLSync(syncId);
             foldersSync.setFileId(folder.getFolderId());
@@ -335,6 +387,82 @@ public class ConfigController extends AbstractController {
             Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PortalException ex) {
             Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SystemException ex) {
+            Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void listLayouts() {
+        try {
+            Layout rootLayout = null;
+
+            long rootLayoutId = LayoutConstants.DEFAULT_PARENT_LAYOUT_ID;
+
+            LayoutLister layoutLister = new LayoutLister();
+
+            String rootNodeName = StringPool.BLANK;
+            LayoutView layoutView = layoutLister.getLayoutView(getThemeDisplay().getScopeGroupId(), false, rootNodeName, getThemeDisplay().getLocale());
+
+            List layoutList = layoutView.getList();
+            Map<String, String> layoutMap = new HashMap<String, String>();
+            layoutMap.put("", AppMessageBundle.getString("choose"));
+            for (int i = 0; i < layoutList.size(); i++) {
+                // id | parentId | ls | obj id | name | img | depth
+                String layoutDesc = (String) layoutList.get(i);
+
+                String[] nodeValues = StringUtil.split(layoutDesc, '|');
+
+                long objId = GetterUtil.getLong(nodeValues[3]);
+                String name = nodeValues[4];
+
+                int depth = 0;
+
+                if (i != 0) {
+                    depth = GetterUtil.getInteger(nodeValues[6]);
+                }
+
+                for (int j = 0; j < depth; j++) {
+                    name = "- " + name;
+                }
+                Layout curRootLayout = null;
+                try {
+                    curRootLayout = LayoutLocalServiceUtil.getLayout(objId);
+                } catch (Exception e) {
+                }
+                if (curRootLayout != null) {
+                    layoutMap.put(String.valueOf(curRootLayout.getPlid()), name);
+                }
+
+            }
+            layoutsForSelect = new SelectItem[layoutMap.size()];
+            int arrayHelper = 0;
+            for (String key : layoutMap.keySet()) {
+                layoutsForSelect[arrayHelper] = new SelectItem(key, layoutMap.get(key));
+                arrayHelper++;
+            }
+        } catch (PortalException ex) {
+            Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SystemException ex) {
+            Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void clearCategorySubscriptions() {
+        try {
+            List<Category> categoryList = CategoryLocalServiceUtil.getCategories();
+            List<SubscriptionCategory> subscriptionList = SubscriptionCategoryLocalServiceUtil.getSubscriptionCategories(0, SubscriptionCategoryLocalServiceUtil.getSubscriptionCategoriesCount());
+//            System.out.println("categoryList" + categoryList);
+//            System.out.println("subscriptionList" + subscriptionList);
+            List<Long> catIds = new ArrayList<Long>();
+            for(Category cat :categoryList){
+                catIds.add(cat.getCategoryId());
+            }
+            for (SubscriptionCategory sCat : subscriptionList) {
+                if (!catIds.contains(sCat.getCategoryId())) {
+                    SubscriptionCategoryLocalServiceUtil.deleteSubscriptionCategory(sCat);
+                }
+            }
+             addSuccessMessage(CLEAR_SUCCESS);
         } catch (SystemException ex) {
             Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
         }

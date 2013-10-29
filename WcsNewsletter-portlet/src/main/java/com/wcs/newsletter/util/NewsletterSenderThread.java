@@ -21,14 +21,19 @@ package com.wcs.newsletter.util;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import com.wcs.newsletter.dto.NewsletterSenderList;
 import com.wcs.newsletter.dto.SendListElem;
+import com.wcs.newsletter.model.NewsletterConfig;
+import com.wcs.newsletter.service.NewsletterConfigLocalServiceUtil;
+import java.util.List;
 import javax.mail.internet.InternetAddress;
 
 public class NewsletterSenderThread implements Runnable {
@@ -62,15 +67,25 @@ public class NewsletterSenderThread implements Runnable {
         try {
             logger.info("sendEmail {0} {1} {2} {3}", new Object[]{from, subject, rcpt, body});
 
+            List<NewsletterConfig> configs = NewsletterConfigLocalServiceUtil.findByConfigKey("subscriptionActionLayout");
+            NewsletterConfig subscriptionActionLayout;
+            subscriptionActionLayout = configs.get(0);
+            Layout layout = null;
+            layout = LayoutLocalServiceUtil.getLayout(Long.parseLong(subscriptionActionLayout.getConfigValue()));
+//            layout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(subscriptionActionLayout.getConfigValue(), themeDisplay.getScopeGroupId());
+//            layout = LayoutLocalServiceUtil.getLayoutByUuidAndGroupId(subscriptionActionLayout.getConfigValue(), themeDisplay.getScopeGroupId(),false);
+            String layoutURL = PortalUtil.getLayoutURL(layout, themeDisplay);
+
             MailMessage mailMessage = new MailMessage();
             String cancLink = "";
             if (rcpt.getNewsletterSubscriptionCategory() != null) {
                 cancLink = rcpt.getNewsletterSubscriptionCategory().getCancellationKey();
             }
             body = body.replace("###newsletterCategory###", rcpt.getCategoryName());
-            //body = body.replace("###portalUrl###", themeDisplay.getURLPortal());
-            body = body.replace("###portalUrl###", themeDisplay.getURLHome()); //web/quest is needed
-            body = body.replace("###cancelattionLink###", "subscription?"+EmailConst.Action.CANCEL_PARAM_KEY+"=" + cancLink);
+            body = body.replace("###portalUrl###", themeDisplay.getURLPortal());
+            //body = body.replace("###portalUrl###", themeDisplay.getURLHome()); //web/quest is needed
+            //body = body.replace("###cancelattionLink###", "subscription?"+EmailConst.Action.CANCEL_PARAM_KEY+"=" + cancLink);
+            body = body.replace("###cancelattionLink###", layoutURL + "?" + EmailConst.Action.CANCEL_PARAM_KEY + "=" + cancLink);
             mailMessage.setBody(body);
             mailMessage.setHTMLFormat(sendHtml);
             mailMessage.setFrom(from);

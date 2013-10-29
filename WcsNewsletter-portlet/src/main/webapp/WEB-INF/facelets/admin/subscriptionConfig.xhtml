@@ -12,7 +12,7 @@
 
         <h:panelGroup rendered="#{!configController.installedDefaults}">
             <p:commandButton value="#{messages.admin_general_install}" actionListener="#{configController.installDefaultContents()}" update="@form" styleClass="marginRight" />                      
-<br /><br />
+            <br /><br />
         </h:panelGroup> 
 
         <h:panelGroup>
@@ -29,13 +29,25 @@
         </h:panelGroup>    
         <br />
         <br />
+        <h:panelGroup>
+            <h:outputText value="#{messages.admin_subscription_action_template}:" styleClass="outputText marginRight" />                  
+            <h:selectOneMenu id="layout" value="#{configController.selectedLayout}">
+                <f:selectItems value="#{configController.layoutsForSelect}"/>
+            </h:selectOneMenu>
+        </h:panelGroup>  
+        <br />
+        <br />
         <hr class="newsletterHr" />
         <p:commandButton value="#{messages.admin_general_save}" actionListener="#{configController.save()}" update="@form" styleClass="marginRight" />                      
+
         
+        <br />
+        <br />
+        <p:commandButton value="#{messages.admin_general_clearSubs}" actionListener="#{configController.clearCategorySubscriptions()}" update="@form" styleClass="marginRight" />                      
         <p:growl autoUpdate="true" sticky="false" />
     </h:form>    
     <h:form prependId="false">
-    <p:dialog id="editorDlg2" widgetVar="editorDlg2" closeOnEscape="true" header="#{messages.admin_newsletter_confirm_template}" resizable="true"
+        <p:dialog id="editorDlg2" widgetVar="editorDlg2" closeOnEscape="true" header="#{messages.admin_newsletter_confirm_template}" resizable="true"
                   dynamic="true" modal="true">  
             <p:dataTable value="#{configController.templateList}"
                          var="wc" id="templateTable"
@@ -57,8 +69,6 @@
                 <p:column headerText="#{messages.admin_general_version}" style="text-align: center;">
                     <h:outputText value="#{wc.version}" />
                 </p:column>  
-
-
             </p:dataTable> 
         </p:dialog>
     </h:form>

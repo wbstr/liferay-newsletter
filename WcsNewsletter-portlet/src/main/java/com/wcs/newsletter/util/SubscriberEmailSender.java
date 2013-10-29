@@ -70,7 +70,9 @@ public class SubscriberEmailSender {
 
         String templateContent = null;
         try {
-            DLFileEntry newsletterTemplate = DLFileEntryLocalServiceUtil.getDLFileEntry(Long.parseLong(newsletterEmail));// DLAppServiceUtil.getFileEntry(Long.parseLong(newsletterEmail));
+           // DLFileEntry newsletterTemplate = DLFileEntryLocalServiceUtil.getDLFileEntry(Long.parseLong(newsletterEmail));
+            FileEntry newsletterTemplate =  DLAppServiceUtil.getFileEntry(Long.parseLong(newsletterEmail));          
+            
             templateContent = Tools.InputStream2Str(newsletterTemplate.getContentStream(), false);
         } catch (Exception ex) {
             logger.error(ex);
