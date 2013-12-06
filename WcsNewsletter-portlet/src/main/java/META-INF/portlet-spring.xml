@@ -3,8 +3,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<bean id="com.wcs.newsletter.service.CategoryLocalService" class="com.wcs.newsletter.service.impl.CategoryLocalServiceImpl" />
 	<bean id="com.wcs.newsletter.service.persistence.CategoryPersistence" class="com.wcs.newsletter.service.persistence.CategoryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.wcs.newsletter.service.EmailTemplateLocalService" class="com.wcs.newsletter.service.impl.EmailTemplateLocalServiceImpl" />
-	<bean id="com.wcs.newsletter.service.persistence.EmailTemplatePersistence" class="com.wcs.newsletter.service.persistence.EmailTemplatePersistenceImpl" parent="basePersistence" />
+<!-- 	<bean id="com.wcs.newsletter.service.EmailTemplateLocalService" class="com.wcs.newsletter.service.impl.EmailTemplateLocalServiceImpl" /> -->
+<!-- 	<bean id="com.wcs.newsletter.service.persistence.EmailTemplatePersistence" class="com.wcs.newsletter.service.persistence.EmailTemplatePersistenceImpl" parent="basePersistence" /> -->
 	<bean id="com.wcs.newsletter.service.LabelLocalService" class="com.wcs.newsletter.service.impl.LabelLocalServiceImpl" />
 	<bean id="com.wcs.newsletter.service.persistence.LabelPersistence" class="com.wcs.newsletter.service.persistence.LabelPersistenceImpl" parent="basePersistence" />
 	<bean id="com.wcs.newsletter.service.NewsletterLocalService" class="com.wcs.newsletter.service.impl.NewsletterLocalServiceImpl" />

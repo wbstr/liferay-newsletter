@@ -3,7 +3,7 @@
 
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.wcs.newsletter.model.Category" />
-	<import class="com.wcs.newsletter.model.EmailTemplate" />
+<!-- 	<import class="com.wcs.newsletter.model.EmailTemplate" /> -->
 	<import class="com.wcs.newsletter.model.Label" />
 	<import class="com.wcs.newsletter.model.Newsletter" />
 	<import class="com.wcs.newsletter.model.NewsletterConfig" />
@@ -18,13 +18,13 @@
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="locale" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
-	<class name="com.wcs.newsletter.model.impl.EmailTemplateImpl" table="WcsNewsletter_EmailTemplate">
-		<cache usage="read-write" />
-		<id name="emailTemplateId" type="long">
-			<generator class="increment" />
-		</id>
-		<property name="fileEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-	</class>
+<!-- 	<class name="com.wcs.newsletter.model.impl.EmailTemplateImpl" table="WcsNewsletter_EmailTemplate"> -->
+<!-- 		<cache usage="read-write" /> -->
+<!-- 		<id name="emailTemplateId" type="long"> -->
+<!-- 			<generator class="increment" /> -->
+<!-- 		</id> -->
+<!-- 		<property name="fileEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" /> -->
+<!-- 	</class> -->
 	<class name="com.wcs.newsletter.model.impl.LabelImpl" table="WcsNewsletter_Label">
 		<cache usage="read-write" />
 		<id name="labelId" type="long">

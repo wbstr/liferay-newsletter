@@ -17,15 +17,15 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.wcs.newsletter.model.impl.EmailTemplateModelImpl">
-		<attributes>
-			<id name="emailTemplateId" />
-			<basic name="fileEntryId" />
-			<transient name="modelAttributes" />
-			<transient name="primaryKey" />
-			<transient name="primaryKeyObj" />
-		</attributes>
-	</mapped-superclass>
+<!-- 	<mapped-superclass class="com.wcs.newsletter.model.impl.EmailTemplateModelImpl"> -->
+<!-- 		<attributes> -->
+<!-- 			<id name="emailTemplateId" /> -->
+<!-- 			<basic name="fileEntryId" /> -->
+<!-- 			<transient name="modelAttributes" /> -->
+<!-- 			<transient name="primaryKey" /> -->
+<!-- 			<transient name="primaryKeyObj" /> -->
+<!-- 		</attributes> -->
+<!-- 	</mapped-superclass> -->
 	<mapped-superclass class="com.wcs.newsletter.model.impl.LabelModelImpl">
 		<attributes>
 			<id name="labelId" />
@@ -107,10 +107,10 @@
 		<table name="WcsNewsletter_Category" />
 		<attributes />
 	</entity>
-	<entity class="com.wcs.newsletter.model.impl.EmailTemplateImpl" name="EmailTemplate">
-		<table name="WcsNewsletter_EmailTemplate" />
-		<attributes />
-	</entity>
+<!-- 	<entity class="com.wcs.newsletter.model.impl.EmailTemplateImpl" name="EmailTemplate"> -->
+<!-- 		<table name="WcsNewsletter_EmailTemplate" /> -->
+<!-- 		<attributes /> -->
+<!-- 	</entity> -->
 	<entity class="com.wcs.newsletter.model.impl.LabelImpl" name="Label">
 		<table name="WcsNewsletter_Label" />
 		<attributes />

@@ -6,10 +6,10 @@
 		<field name="name" type="String" />
 		<field name="locale" type="String" />
 	</model>
-	<model name="com.wcs.newsletter.model.EmailTemplate">
-		<field name="emailTemplateId" type="long" />
-		<field name="fileEntryId" type="long" />
-	</model>
+<!-- 	<model name="com.wcs.newsletter.model.EmailTemplate"> -->
+<!-- 		<field name="emailTemplateId" type="long" /> -->
+<!-- 		<field name="fileEntryId" type="long" /> -->
+<!-- 	</model> -->
 	<model name="com.wcs.newsletter.model.Label">
 		<field name="labelId" type="long" />
 		<field name="tagId" type="long" />
