@@ -18,37 +18,33 @@
 
         <!-- Required for primefaces versions < 4.0 -->
         <repository>
-                <id>prime-repo</id>
-                <name>PrimeFaces Maven Repository</name>
-                <url>http://repository.primefaces.org</url>
-                <layout>default</layout>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+            <layout>default</layout>
         </repository>
 
         <!-- Required for jboss artifacts -->
         <repository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
     
-    
     <properties>
-        <liferay.auto.deploy.dir>/home/berndt/apps/liferay-portal-6.1.2-ce-ga3/deploy</liferay.auto.deploy.dir>  
         <liferay.version>6.1.1</liferay.version>
         <liferay.maven.plugin.version>6.1.1</liferay.maven.plugin.version>
         <liferay.faces.version>3.1.3-ga4</liferay.faces.version>
-        <!-- meanwhile released -->
-<!--         <liferay.faces.version>3.1.3-ga4-SNAPSHOT</liferay.faces.version> -->
         <mojarra.version>2.1.20</mojarra.version>
         <primefaces.version>3.5</primefaces.version>
         <primefaces.extension.version>0.7.0</primefaces.extension.version>
@@ -109,8 +105,6 @@
                             <goal>update-file-header</goal>
                         </goals>
                         <phase>prepare-package</phase>
-                        <!-- Is this a jRebel phase? -->
-<!--                         <phase>process-sources</phase> -->
                     </execution>
                 </executions>
             </plugin>
