@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.security.permission.ActionKeys;
@@ -46,19 +45,18 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.LayoutLister;
 import com.liferay.portal.util.LayoutView;
-import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
-import com.liferay.portlet.documentlibrary.model.DLSync;
+//import com.liferay.portlet.documentlibrary.model.DLSync;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFolderLocalServiceUtil;
-import com.liferay.portlet.documentlibrary.service.DLSyncLocalServiceUtil;
+import static com.wcs.newsletter.controller.AbstractController.logger;
+//import com.liferay.portlet.documentlibrary.service.DLSyncLocalServiceUtil;
 import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.NewsletterConfig;
-import com.wcs.newsletter.model.Subscription;
 import com.wcs.newsletter.model.SubscriptionCategory;
 import com.wcs.newsletter.model.impl.CategoryImpl;
 import com.wcs.newsletter.model.impl.NewsletterConfigImpl;
@@ -89,7 +87,7 @@ import org.apache.commons.io.IOUtils;
  *
  * @author csaba
  */
-@ManagedBean
+@ManagedBean (name = "configController")
 @ViewScoped
 public class ConfigController extends AbstractController {
 
@@ -261,6 +259,7 @@ public class ConfigController extends AbstractController {
     }
 
     public void installDefaultContents() {
+
         try {
 
             long id = CounterLocalServiceUtil.increment();
@@ -285,20 +284,20 @@ public class ConfigController extends AbstractController {
             serviceContext.setAddGuestPermissions(true);
             serviceContext.setGuestPermissions(new String[]{ActionKeys.ACCESS});
 
-            long syncId = CounterLocalServiceUtil.increment();
-            DLSync foldersSync = DLSyncLocalServiceUtil.createDLSync(syncId);
-            foldersSync.setFileId(folder.getFolderId());
-            foldersSync.setParentFolderId(folder.getParentFolderId());
-            foldersSync.setCompanyId(folder.getCompanyId());
-            foldersSync.setFileUuid(folder.getUuid());
-            foldersSync.setRepositoryId(folder.getRepositoryId());
-            foldersSync.setName(folder.getName());
-            foldersSync.setEvent("add");
-            foldersSync.setType("folder");
-            foldersSync.setVersion("-1");
-            foldersSync.setCreateDate(allDate);
-            foldersSync.setModifiedDate(allDate);
-            DLSyncLocalServiceUtil.updateDLSync(foldersSync);
+            /*long syncId = CounterLocalServiceUtil.increment();
+             DLSyncEvent foldersSync = DLSyncEventLocalServiceUtil.createDLSyncEvent(syncId);
+             foldersSync.setFileId(folder.getFolderId());
+             foldersSync.setParentFolderId(folder.getParentFolderId());
+             foldersSync.setCompanyId(folder.getCompanyId());
+             foldersSync.setFileUuid(folder.getUuid());
+             foldersSync.setRepositoryId(folder.getRepositoryId());
+             foldersSync.setName(folder.getName());
+             foldersSync.setEvent("add");
+             foldersSync.setType("folder");
+             foldersSync.setVersion("-1");
+             foldersSync.setCreateDate(allDate);
+             foldersSync.setModifiedDate(allDate);
+             DLSyncEventLocalServiceUtil.updateDLSync(foldersSync);*/
 
             /* Confirm tempalte 1*/
             long fileId = CounterLocalServiceUtil.increment();
@@ -454,7 +453,7 @@ public class ConfigController extends AbstractController {
 //            System.out.println("categoryList" + categoryList);
 //            System.out.println("subscriptionList" + subscriptionList);
             List<Long> catIds = new ArrayList<Long>();
-            for(Category cat :categoryList){
+            for (Category cat : categoryList) {
                 catIds.add(cat.getCategoryId());
             }
             for (SubscriptionCategory sCat : subscriptionList) {
@@ -462,7 +461,7 @@ public class ConfigController extends AbstractController {
                     SubscriptionCategoryLocalServiceUtil.deleteSubscriptionCategory(sCat);
                 }
             }
-             addSuccessMessage(CLEAR_SUCCESS);
+            addSuccessMessage(CLEAR_SUCCESS);
         } catch (SystemException ex) {
             Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
         }

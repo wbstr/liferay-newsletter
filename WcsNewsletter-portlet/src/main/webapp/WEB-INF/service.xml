@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_1_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
 <service-builder package-path="com.wcs.newsletter">
     <namespace>WcsNewsletter</namespace>
 
@@ -7,6 +7,8 @@
         <column name="categoryId" db-name="categoryId" type="long" primary="true" id-type="increment"></column>
         <column name="name" db-name="name" type="String"></column>
         <column name="locale" db-name="locale" type="String"></column>
+        <column name="newsletters" type="Collection" entity="Newsletter" mapping-table="Newsletter_Category"/>
+        
         <finder name="Locale" return-type="Collection">
             <finder-column name="locale" />
         </finder> 
@@ -14,6 +16,7 @@
     <entity name="Label" local-service="true" remote-service="false">
         <column name="labelId" db-name="labelId" type="long" primary="true" id-type="identity"></column>
         <column name="tagId" db-name="tagId" type="long"></column>
+        <column name="newsletters" type="Collection" entity="Newsletter" mapping-table="Newsletter_Label"/>
         
         <finder name="TagId" return-type="Collection">
             <finder-column name="tagId" />
@@ -66,12 +69,10 @@
         <column name="parentId" db-name="parentId" type="long"></column>
         <column name="creationTime" db-name="creationTime" type="Date"></column>
         <column name="state" db-name="state" type="String"></column>
-        
-        <column name="categories" type="Collection" entity="Category" mapping-table="Newsletter_Category"></column>
-        <column name="labels" type="Collection" entity="Label" mapping-table="Newsletter_Label"></column>
-        
-        <column name="recipients" type="Collection" entity="Recipient" mapping-key="newsletterId"></column>
-        
+        <column name="categories" type="Collection" entity="Category" mapping-table="Newsletter_Category"/>
+        <column name="labels" type="Collection" entity="Label" mapping-table="Newsletter_Label"/>
+        <column name="recipients" type="Collection" entity="Recipient"/>
+
         <finder name="ParentId" return-type="Collection">
             <finder-column name="parentId" />
         </finder>          

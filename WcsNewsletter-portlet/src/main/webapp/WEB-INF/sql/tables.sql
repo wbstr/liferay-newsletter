@@ -29,15 +29,15 @@ create table WcsNewsletter_NewsletterConfig (
 );
 
 create table WcsNewsletter_Newsletter_Category (
-	newsletterId LONG not null,
 	categoryId LONG not null,
-	primary key (newsletterId, categoryId)
+	newsletterId LONG not null,
+	primary key (categoryId, newsletterId)
 );
 
 create table WcsNewsletter_Newsletter_Label (
-	newsletterId LONG not null,
 	labelId LONG not null,
-	primary key (newsletterId, labelId)
+	newsletterId LONG not null,
+	primary key (labelId, newsletterId)
 );
 
 create table WcsNewsletter_Recipient (

@@ -21,7 +21,6 @@ package com.wcs.newsletter.controller;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -29,7 +28,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetTag;
-import com.liferay.portlet.asset.model.AssetTagWrapper;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
@@ -44,12 +42,10 @@ import com.wcs.newsletter.dto.NewsletterSenderList;
 import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.Label;
 import com.wcs.newsletter.model.Newsletter;
-import com.wcs.newsletter.model.NewsletterConfig;
 import com.wcs.newsletter.model.Recipient;
 import com.wcs.newsletter.model.impl.NewsletterImpl;
 import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.service.NewsletterLocalServiceUtil;
-import com.wcs.newsletter.service.NewsletterConfigLocalServiceUtil;
 import com.wcs.newsletter.service.RecipientLocalServiceUtil;
 import com.wcs.newsletter.tools.Tools;
 import com.wcs.newsletter.util.LiferayUtil;
@@ -274,7 +270,7 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             savedAssetTag.setCreateDate(date);
             savedAssetTag.setModifiedDate(date);
 
-            AssetTagLocalServiceUtil.updateAssetTag(savedAssetTag, true);
+            AssetTagLocalServiceUtil.updateAssetTag(savedAssetTag);//, true
             savedAssetTag = AssetTagLocalServiceUtil.getTag(tagId);
         }
 
@@ -400,7 +396,8 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             Logger.getLogger(NewsletterEditController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     public void generateUserListTable(Newsletter sNL) {
+
+    public void generateUserListTable(Newsletter sNL) {
         try {
             userList = new ArrayList<Recipient>();
             userList = RecipientLocalServiceUtil.findByNewsletterId(sNL.getNewsletterId());
@@ -408,7 +405,6 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             Logger.getLogger(NewsletterEditController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     public List<Recipient> getUserList() {
         return userList;
