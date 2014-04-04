@@ -75,7 +75,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         
         Long newsletterId = newsletter.getNewsletterId();
         
-        recipients = newsletterPersistence.getRecipients(newsletterId);
+        recipients = recipientPersistence.findByNewsletterId(newsletterId);//newsletterPersistence.getRecipients(newsletterId);
         
         return recipients;
     }    

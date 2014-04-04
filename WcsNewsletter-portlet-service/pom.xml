@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.wcs</groupId>
         <artifactId>WcsNewsletter</artifactId>
-        <version>1.0.0.2</version>
+        <version>1.0.0.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,15 +12,24 @@
     <artifactId>WcsNewsletter-portlet-service</artifactId>
     <packaging>jar</packaging>
     <name>WcsNewsletter Portlet Service</name>
-    <version>1.0.0.2</version>
+    <version>1.0.0.3</version>
     <build>
         <plugins>
             <plugin>
                 <groupId>com.liferay.maven.plugins</groupId>
                 <artifactId>liferay-maven-plugin</artifactId>
-                <version>${liferay.version}</version>
+                <version>${liferay.maven.plugin.version}</version>
                 <configuration>
                     <webappBaseDir>${basedir}/../WcsNewsletter-portlet</webappBaseDir>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -34,7 +43,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>org.springframework.transaction</artifactId>
+            <artifactId>spring-tx</artifactId>
+<!--             <artifactId>org.springframework.transaction</artifactId> -->
             <version>3.1.0.RELEASE</version>
         </dependency>   
     </dependencies>

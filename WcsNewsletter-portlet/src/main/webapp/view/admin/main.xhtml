@@ -4,20 +4,19 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:f="http://java.sun.com/jsf/core"
       >
     <h:head>
         <script type="text/javascript">
             //<![CDATA[
-            function oncompleteDefaultHandler(data){       
-                cHT=data;
-                if(data.childNodes == undefined){
+            function oncompleteDefaultHandler(data) {
+                cHT = data;
+                if (data.childNodes == undefined) {
                     location.reload();
                 }
-            }            
-            
-            var originalPrimeFacesAjaxUtilsSend = PrimeFaces.ajax.AjaxUtils.send;           
+            }
+
+            var originalPrimeFacesAjaxUtilsSend = PrimeFaces.ajax.AjaxUtils.send;
             PrimeFaces.ajax.AjaxUtils.send = function(cfg) {
                 if (!cfg.oncomplete) {
                     cfg.oncomplete = oncompleteDefaultHandler;
@@ -32,7 +31,6 @@
             <p:growl autoUpdate="true" sticky="false" />
             <p:tabView id="adminTabView" dynamic="true" >
                 <p:ajax event="tabChange" onerror="oncompleteDefaultHandler(this)"/>
-               
                 <p:tab title="#{messages.admin_menu_categories}">                  
                     <ui:include src="/WEB-INF/facelets/admin/categoryTab.xhtml" />
                 </p:tab>
@@ -47,5 +45,6 @@
                 </p:tab>
             </p:tabView>                
         </f:view>
+        version 1.0
     </h:body>    
 </html>

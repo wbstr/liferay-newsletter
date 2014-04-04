@@ -5,18 +5,49 @@
     <artifactId>WcsNewsletter</artifactId>
     <packaging>pom</packaging>
     <name>WcsNewsletter</name>
-    <version>1.0.0.2</version>
+    <version>1.0.0.3</version>
     <modules>
         <module>WcsNewsletter-portlet-service</module>
         <module>WcsNewsletter-portlet</module>
     </modules>
+    
+    <!-- The following repositories configuration is -->
+    <!-- required, if you haven't configured them    -->
+    <!-- somewhere else.                             -->
+    <repositories>
+
+        <!-- Required for primefaces versions < 4.0 -->
+        <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>http://repository.primefaces.org</url>
+            <layout>default</layout>
+        </repository>
+
+        <!-- Required for jboss artifacts -->
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
-        <liferay.version>6.1.1</liferay.version>
-        <liferay.maven.plugin.version>6.1.1</liferay.maven.plugin.version>
-        <liferay.faces.version>3.1.3-ga4-SNAPSHOT</liferay.faces.version>
-        <mojarra.version>2.1.20</mojarra.version>
+        <liferay.version>6.2.0-ga1</liferay.version>
+        <liferay.maven.plugin.version>6.2.0-ga1</liferay.maven.plugin.version>
+        <liferay.faces.version>3.2.4-ga5</liferay.faces.version>
+        <mojarra.version>2.1.21</mojarra.version>
         <primefaces.version>3.5</primefaces.version>
-        <primefaces.extension.version>0.7.0</primefaces.extension.version>
+<!--        <primefaces.extension.version>1.0.1</primefaces.extension.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>    
     <build>
@@ -37,8 +68,8 @@
                 <version>3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -73,7 +104,7 @@
                         <goals>
                             <goal>update-file-header</goal>
                         </goals>
-                        <phase>process-sources</phase>
+                        <phase>prepare-package</phase>
                     </execution>
                 </executions>
             </plugin>
