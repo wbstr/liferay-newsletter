@@ -49,6 +49,16 @@
         <primefaces.version>3.5</primefaces.version>
 <!--        <primefaces.extension.version>1.0.1</primefaces.extension.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- My props -->
+        <liferay.dir>C:\Program Files\liferay-portal-6.2.0-ce-ga1</liferay.dir>
+        <liferay.app.server.dir>${liferay.dir}/tomcat-7.0.42</liferay.app.server.dir>
+        <liferay.app.server.deploy.dir>${liferay.app.server.dir}/webapps</liferay.app.server.deploy.dir>
+        <liferay.app.server.lib.global.dir>${liferay.app.server.dir}/lib/ext</liferay.app.server.lib.global.dir>
+        <liferay.app.server.portal.dir>${liferay.app.server.dir}/webapps/ROOT</liferay.app.server.portal.dir>
+        <liferay.auto.deploy.dir>${liferay.dir}/deploy</liferay.auto.deploy.dir>
+        
+        
     </properties>    
     <build>
         <plugins>
