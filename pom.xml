@@ -45,7 +45,8 @@
         <liferay.version>6.2.0-ga1</liferay.version>
         <liferay.maven.plugin.version>6.2.0-ga1</liferay.maven.plugin.version>
         <liferay.faces.version>3.2.4-ga5</liferay.faces.version>
-        <mojarra.version>2.1.21</mojarra.version>
+        <mojarra.version>2.1.28</mojarra.version>
+<!--         <mojarra.version>2.1.21</mojarra.version> -->
         <primefaces.version>3.5</primefaces.version>
 <!--        <primefaces.extension.version>1.0.1</primefaces.extension.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
