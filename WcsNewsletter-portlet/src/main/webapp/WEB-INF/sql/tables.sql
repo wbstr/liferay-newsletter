@@ -56,10 +56,10 @@ create table WcsNewsletter_Subscription (
 );
 
 create table WcsNewsletter_Subscription_Category (
-	subscriptionId LONG not null,
-	categoryId LONG not null,
+	subscriptionCategoryId LONG not null primary key,
+	subscriptionId LONG,
+	categoryId LONG,
 	confirmationKey VARCHAR(75) null,
 	cancellationKey VARCHAR(75) null,
-	status VARCHAR(75) null,
-	primary key (subscriptionId, categoryId)
+	status VARCHAR(75) null
 );

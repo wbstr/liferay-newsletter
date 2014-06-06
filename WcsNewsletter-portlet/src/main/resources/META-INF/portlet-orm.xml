@@ -82,10 +82,10 @@
 		</attributes>
 	</mapped-superclass>
 	<mapped-superclass class="com.wcs.newsletter.model.impl.SubscriptionCategoryModelImpl">
-		<id-class class="com.wcs.newsletter.service.persistence.SubscriptionCategoryPK" />
 		<attributes>
-			<id name="subscriptionId" />
-			<id name="categoryId" />
+			<id name="subscriptionCategoryId" />
+			<basic name="subscriptionId" />
+			<basic name="categoryId" />
 			<basic name="confirmationKey" />
 			<basic name="cancellationKey" />
 			<basic name="status" />

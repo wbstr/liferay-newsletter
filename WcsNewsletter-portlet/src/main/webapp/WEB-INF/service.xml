@@ -36,8 +36,9 @@
         </finder> 
     </entity>  
     <entity name="SubscriptionCategory" table="WcsNewsletter_Subscription_Category" local-service="true" remote-service="false">
-        <column name="subscriptionId" db-name="subscriptionId" type="long" primary="true"></column>
-        <column name="categoryId" db-name="categoryId" type="long" primary="true"></column>
+        <column name="subscriptionCategoryId" db-name="subscriptionCategoryId" type="long" primary="true"></column>
+        <column name="subscriptionId" db-name="subscriptionId" type="long" primary="false"></column>
+        <column name="categoryId" db-name="categoryId" type="long" primary="false"></column>
         <column name="confirmationKey" db-name="confirmationKey" type="String"></column>        
         <column name="cancellationKey" db-name="cancellationKey" type="String"></column> 
         <column name="status" db-name="status" type="String"></column> 

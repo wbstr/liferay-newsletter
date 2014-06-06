@@ -68,10 +68,11 @@
 	</class>
 	<class name="com.wcs.newsletter.model.impl.SubscriptionCategoryImpl" table="WcsNewsletter_Subscription_Category">
 		<cache usage="read-write" />
-		<composite-id name="primaryKey" class="com.wcs.newsletter.service.persistence.SubscriptionCategoryPK">
-			<key-property name="subscriptionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-			<key-property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		</composite-id>
+		<id name="subscriptionCategoryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="subscriptionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="categoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="confirmationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="cancellationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
