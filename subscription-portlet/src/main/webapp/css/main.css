@@ -1,0 +1,11 @@
+/**
+ * main.css: css styles of the newsletter-subscription-portlet
+ *
+ * Created:     2014-06-05 12:34 by Christian Berndt
+ * Modified:    2014-06-06 12:34 by Christian Berndt
+ * Version:     1.0
+ */
+ ul.messages {
+     list-style-type: none;     /* Do not display bullets for single messages */
+     margin: 0;                 /* No margin for message lists */
+ }
