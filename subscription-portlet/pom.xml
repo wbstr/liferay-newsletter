@@ -4,14 +4,14 @@
 	<parent>
         <artifactId>WcsNewsletter</artifactId>
         <groupId>com.wcs</groupId>
-        <version>1.0.0.4</version>
+        <version>1.0.0.3</version>
         <relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>com.wcs</groupId>
 	<artifactId>subscription-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>subscription-portlet Portlet</name>
-	<version>1.0.0.4</version>
+	<version>1.0.0.3</version>
 	<build>
 		<plugins>
 			<plugin>
