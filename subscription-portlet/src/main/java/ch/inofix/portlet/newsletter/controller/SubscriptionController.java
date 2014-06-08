@@ -31,6 +31,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.portlet.PortletRequest;
 
+import ch.inofix.portlet.newsletter.dto.SubscriptionKeySet;
+import ch.inofix.portlet.newsletter.util.SubscriptionKeyUtil;
+
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
@@ -54,8 +57,8 @@ import com.wcs.newsletter.service.SubscriptionLocalServiceUtil;
  * 
  * @author Christian Berndt
  * @created 2014-06-05 11:01
- * @modified 2014-06-06 11:01
- * @version 1.0
+ * @modified 2014-06-08 17:54
+ * @version 1.1
  * 
  */
 @ManagedBean
@@ -137,24 +140,35 @@ public class SubscriptionController {
 				subscription.setEmail(email);
 				subscription.setSubscriptionDate(new Date());
 
-				SubscriptionLocalServiceUtil.updateSubscription(subscription);
+				subscription = SubscriptionLocalServiceUtil
+						.updateSubscription(subscription);
 
 			}
+			
+			// Because in WcsNewsletter service an increment key is used, 
+			// we must update the subscriptionId here
+			subscriptionId = subscription.getSubscriptionId(); 
 
 			// Update the list of associated categories
 			List<SubscriptionCategory> subscriptionCategories = SubscriptionCategoryLocalServiceUtil
 					.findBySubscriptionId(subscriptionId);
 
+			logger.debug("subscriptionCategories.size = "
+					+ subscriptionCategories.size());
+
 			if (subscriptionCategories.size() > 0) {
 
-				// TODO: Do not remove but update the list of associated
+				// TODO: Do not remove, only update the list of associated
 				// categories
 				//
 				// Remove the list of already associated categories
 				for (SubscriptionCategory subscriptionCategory : subscriptionCategories) {
 
-					SubscriptionCategoryLocalServiceUtil
+					subscriptionCategory = SubscriptionCategoryLocalServiceUtil
 							.deleteSubscriptionCategory(subscriptionCategory);
+
+					logger.debug("Deleted subscriptionCategory with id = "
+							+ subscriptionCategory.getSubscriptionCategoryId());
 				}
 			}
 
@@ -171,6 +185,14 @@ public class SubscriptionController {
 
 				subscriptionCategory.setCategoryId(categoryId);
 				subscriptionCategory.setSubscriptionId(subscriptionId);
+
+				SubscriptionKeySet subscriptionKeySet = SubscriptionKeyUtil
+						.generateKeySet(selectedCategoryId, email);
+				subscriptionCategory.setCancellationKey(subscriptionKeySet
+						.getCancelationKey());
+
+				String confirmed = "1";
+				subscriptionCategory.setStatus(confirmed);
 
 				SubscriptionCategoryLocalServiceUtil
 						.addSubscriptionCategory(subscriptionCategory);
