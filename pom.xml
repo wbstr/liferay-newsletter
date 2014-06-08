@@ -9,12 +9,22 @@
     <modules>
         <module>WcsNewsletter-portlet-service</module>
         <module>WcsNewsletter-portlet</module>
+<!--         <module>subscription-portlet</module> -->
     </modules>
     
     <!-- The following repositories configuration is -->
     <!-- required, if you haven't configured them    -->
     <!-- somewhere else.                             -->
     <repositories>
+
+	    <!-- Strange enough - if we configure the repo here and     -->
+	    <!-- and not in settings.xml (as recommended) it's working. -->    
+        <repository>
+            <id>liferay-ce</id>
+            <name>Liferay CE</name>
+            <url>https://repository.liferay.com/nexus/content/repositories/liferay-ce/</url>
+            <layout>default</layout>
+        </repository>
 
         <!-- Required for primefaces versions < 4.0 -->
         <repository>
@@ -40,6 +50,17 @@
             </snapshots>
         </repository>
     </repositories>
+    
+    <!-- Strange enough - if we configure the repo here and     -->
+    <!-- and not in settings.xml (as recommended) it's working. -->
+    <pluginRepositories>
+    	<pluginRepository>
+            <id>liferay-ce</id>
+            <name>Liferay CE</name>
+            <url>https://repository.liferay.com/nexus/content/repositories/liferay-ce/</url>
+            <layout>default</layout>
+    	</pluginRepository>
+    </pluginRepositories>
 
     <properties>
         <liferay.version>6.2.0-ga1</liferay.version>
@@ -52,7 +73,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <!-- My props -->
-        <liferay.dir>C:\Program Files\liferay-portal-6.2.0-ce-ga1</liferay.dir>
+        <liferay.dir>/home/berndt/Applications/liferay-portal-6.2.0-ce-ga1</liferay.dir>
+<!--         <liferay.dir>C:\Program Files\liferay-portal-6.2.0-ce-ga1</liferay.dir> -->
         <liferay.app.server.dir>${liferay.dir}/tomcat-7.0.42</liferay.app.server.dir>
         <liferay.app.server.deploy.dir>${liferay.app.server.dir}/webapps</liferay.app.server.deploy.dir>
         <liferay.app.server.lib.global.dir>${liferay.app.server.dir}/lib/ext</liferay.app.server.lib.global.dir>
@@ -79,8 +101,10 @@
                 <version>3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.6</source>
+<!--                     <source>1.7</source> -->
+                    <target>1.6</target>
+<!--                     <target>1.7</target> -->
                 </configuration>
             </plugin>
             <plugin>
