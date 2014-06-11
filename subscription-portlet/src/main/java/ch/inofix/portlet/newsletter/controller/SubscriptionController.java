@@ -57,8 +57,8 @@ import com.wcs.newsletter.service.SubscriptionLocalServiceUtil;
  * 
  * @author Christian Berndt
  * @created 2014-06-05 11:01
- * @modified 2014-06-08 17:54
- * @version 1.1
+ * @modified 2014-06-10 19:51
+ * @version 1.2
  * 
  */
 @ManagedBean
@@ -237,9 +237,10 @@ public class SubscriptionController {
 
 		logger.info("Executing getCategories()");
 
+		return CategoryLocalServiceUtil.getCategories(); 
 		// TODO: Find a cleaner solution for the Locale to String conversion
-		return CategoryLocalServiceUtil.findByLocale(""
-				+ getThemeDisplay().getLocale());
+//		return CategoryLocalServiceUtil.findByLocale(""
+//				+ getThemeDisplay().getLocale());
 
 	}
 
