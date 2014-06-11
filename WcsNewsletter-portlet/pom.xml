@@ -18,14 +18,14 @@
                 <groupId>com.liferay.maven.plugins</groupId>
                 <artifactId>liferay-maven-plugin</artifactId>
                 <version>${liferay.maven.plugin.version}</version>
-<!--                <executions>
+                <executions>
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>build-css</goal>
                         </goals>
                     </execution>
-                </executions>-->
+                </executions>
                 <configuration>
                     <apiBaseDir>${basedir}/../WcsNewsletter-portlet-service</apiBaseDir>
                 </configuration>
