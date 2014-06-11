@@ -566,7 +566,8 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             List<Category> target = new ArrayList<Category>();
 
             try {
-                List<Category> allCategories = CategoryLocalServiceUtil.findByLocale(getCategoryLocale());
+                List<Category> allCategories = CategoryLocalServiceUtil.getCategories(); 
+//                List<Category> allCategories = CategoryLocalServiceUtil.findByLocale(getCategoryLocale());
                 source.addAll(allCategories);
 
                 if (!getElem().isNew()) {
