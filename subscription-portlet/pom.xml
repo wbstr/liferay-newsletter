@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-        <artifactId>WcsNewsletter</artifactId>
-        <groupId>com.wcs</groupId>
-        <version>1.0.0.3</version>
-        <relativePath>../pom.xml</relativePath>
+		<artifactId>WcsNewsletter</artifactId>
+		<groupId>com.wcs</groupId>
+		<version>1.0.0.3</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<groupId>com.wcs</groupId>
 	<artifactId>subscription-portlet</artifactId>
@@ -33,7 +34,7 @@
 					<appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
 					<liferayVersion>${liferay.version}</liferayVersion>
 					<pluginType>portlet</pluginType>
-                    <apiBaseDir>${basedir}/../WcsNewsletter-portlet-service</apiBaseDir>
+					<apiBaseDir>${basedir}/../WcsNewsletter-portlet-service</apiBaseDir>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -68,12 +69,12 @@
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>liferay-faces-bridge-impl</artifactId>
-            <version>${liferay.faces.version}</version>
+			<version>${liferay.faces.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.faces</groupId>
 			<artifactId>liferay-faces-portal</artifactId>
-            <version>${liferay.faces.version}</version>
+			<version>${liferay.faces.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.liferay.portal</groupId>
@@ -125,23 +126,23 @@
 			<artifactId>primefaces</artifactId>
 			<version>3.5</version>
 		</dependency>
-		
+
 		<!-- Use the webstar-newsletter service layer -->
-        <dependency>
-            <groupId>com.wcs</groupId>
-            <artifactId>WcsNewsletter-portlet-service</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <!-- Required in order to use some liferay utilities -->
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.0</version>
-            <scope>provided</scope>
-        </dependency>
-        
-        
+		<dependency>
+			<groupId>com.wcs</groupId>
+			<artifactId>WcsNewsletter-portlet-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<!-- Required in order to use some liferay utilities -->
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+
 	</dependencies>
 	<repositories>
 		<repository>
