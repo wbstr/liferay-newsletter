@@ -1,6 +1,6 @@
 create table WcsNewsletter_Category (
 	categoryId LONG not null primary key,
-	name VARCHAR(75) null,
+	name STRING null,
 	locale VARCHAR(75) null
 );
 

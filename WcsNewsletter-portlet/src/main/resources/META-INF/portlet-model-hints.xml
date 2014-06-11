@@ -3,7 +3,7 @@
 <model-hints>
 	<model name="com.wcs.newsletter.model.Category">
 		<field name="categoryId" type="long" />
-		<field name="name" type="String" />
+		<field name="name" type="String" localized="true" />
 		<field name="locale" type="String" />
 	</model>
 	<model name="com.wcs.newsletter.model.Label">

@@ -13,6 +13,8 @@
 			<basic name="name" />
 			<basic name="locale" />
 			<transient name="modelAttributes" />
+			<transient name="nameCurrentLanguageId" />
+			<transient name="nameMap" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>

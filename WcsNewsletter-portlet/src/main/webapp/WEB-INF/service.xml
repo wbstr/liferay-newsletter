@@ -5,7 +5,7 @@
 
     <entity name="Category" local-service="true" remote-service="false">
         <column name="categoryId" db-name="categoryId" type="long" primary="true" id-type="increment"></column>
-        <column name="name" db-name="name" type="String"></column>
+        <column name="name" db-name="name" type="String" localized="true"></column>
         <column name="locale" db-name="locale" type="String"></column>
         <column name="newsletters" type="Collection" entity="Newsletter" mapping-table="Newsletter_Category"/>
         

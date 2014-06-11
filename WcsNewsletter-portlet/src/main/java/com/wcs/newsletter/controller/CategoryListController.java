@@ -23,6 +23,7 @@ package com.wcs.newsletter.controller;
  */
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.util.PortalUtil;
 import com.wcs.newsletter.dto.CategoryListElem;
 import com.wcs.newsletter.dto.CategoryListElemDataModel;
 import com.wcs.newsletter.model.Category;
@@ -33,6 +34,7 @@ import com.wcs.newsletter.service.SubscriptionCategoryLocalServiceUtil;
 import com.wcs.newsletter.util.AppMessageBundle;
 import com.wcs.newsletter.util.LiferayUtil;
 import com.wcs.newsletter.util.WcsNewsletterConst;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,6 +42,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
@@ -87,13 +90,20 @@ public class CategoryListController extends AbstractListController<CategoryListE
 
         for (Category category : categories) {
             long id = category.getCategoryId();
-            String name = category.getName();
+            String localeStr = category.getLocale();
+            Locale locale = null;
+			try {
+				locale = PortalUtil.getSiteDefaultLocale(0);
+			} catch (PortalException e) {
+//				e.printStackTrace();
+				logger.error(e);
+			} 
+            String name = category.getName(locale);
 
             List<SubscriptionCategory> subscribedList = SubscriptionCategoryLocalServiceUtil.findByCategoryId(id);
             long subscribed = subscribedList != null ? subscribedList.size() : 0;
 
-            String localeStr = category.getLocale();
-            Locale locale = LiferayUtil.getLocale(localeStr);
+
 
             String adminLocaleStr = LiferayUtil.getLiferayFullLangCode();
             Locale adminLocale = LiferayUtil.getLocale(adminLocaleStr);

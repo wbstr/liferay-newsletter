@@ -38,9 +38,8 @@
                             <h:outputText value="#{category.name}" />  
                         </p:column>                 
 
-                        <p:column headerText="#{messages.admin_categories_category_lang}" sortBy="#{category.localizedLocaleStr}" sortFunction="#{sortTools.sort}" filterBy="#{category.localeStr}" filterOptions="#{categoryListController.localeOptions}" filterMatchMode="exact">  
-                            <h:outputText value="#{category.localizedLocaleStr}" />  
-                        </p:column>                   
+						<!-- Removed obsolete locale column -->
+                 
 
                         <p:column headerText="#{messages.admin_categories_subscribed}" sortBy="#{category.subscribed}" sortFunction="#{sortTools.sort}" filterBy="#{category.subscribed}" filterMatchMode="startsWith" styleClass="shortColumn">  
                             <h:outputText value="#{category.subscribed}" />  
@@ -98,10 +97,11 @@
             <h:form id="categoryEditForm">
                 <p:panelGrid columns="1" styleClass="panelGrid" >
                     <h:outputText value="#{messages.admin_categories_category_name}:" styleClass="outputText" />
-                    <h:inputText id="name" value="#{categoryEditController.elem.name}" required="true" label="#{messages.admin_categories_category_name}" styleClass="inputText" />
+                    <h:inputText id="name" value="#{categoryEditController.name}" required="true" label="#{messages.admin_categories_category_name}" styleClass="inputText" />
 
                     <h:outputText value="#{messages.admin_categories_category_locale}:" styleClass="outputText" />
-                    <p:selectOneMenu id="locale" value="#{categoryEditController.elem.locale}">
+                    <p:selectOneMenu id="locale" value="#{categoryEditController.languageId}">
+		                <p:ajax listener="#{categoryEditController.onChangeLanguage}" update="name" />
                         <f:selectItems value="#{categoryEditController.availableLocales}" var="locale" itemValue="#{locale.toString()}" itemLabel="#{locale.displayName}" />
                     </p:selectOneMenu>
 
