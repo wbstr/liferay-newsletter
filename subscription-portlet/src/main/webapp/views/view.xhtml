@@ -4,8 +4,8 @@
     view.xhtml: Default view of the newsletter subscription portlet.
     
     Created:    2014-06-05 11:23 by Christian Berndt
-    Modified:   2014-06-11 15:17 by Christian Berndt
-    Version:    1.1
+    Modified:   2014-06-11 18.58 by Christian Berndt
+    Version:    1.2
     
  -->
 <f:view xmlns="http://www.w3.org/1999/xhtml"
@@ -47,7 +47,7 @@
 
 						<f:selectItems value="#{subscriptionController.categories}"
 							var="category" itemValue="#{category.categoryId}"
-							itemLabel="#{category.name}" />
+							itemLabel="#{category.getName(#locale)}" />
 
 					</h:selectManyListbox>
 					<h:message for="subscriptions" />
