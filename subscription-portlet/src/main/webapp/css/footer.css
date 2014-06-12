@@ -1,0 +1,14 @@
+ /**
+ * footer.css: override styles defined by other style-sheets
+ *
+ * Created:     2014-06-12 19:50 by Christian Berndt
+ * Modified:    2014-06-12 19:50 by Christian Berndt
+ * Version:     1.0
+ */
+ 
+/* Override the aui-settings */
+.aui .subscription-portlet, 
+.aui .subscription-portlet label
+{
+	font-size: 12px;
+} 

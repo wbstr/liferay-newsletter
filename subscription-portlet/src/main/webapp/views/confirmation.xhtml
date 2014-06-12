@@ -5,8 +5,8 @@
     subscription.
     
     Created:    2014-06-11 15:08 by Christian Berndt
-    Modified:   2014-06-11 15:08 by Christian Berndt
-    Version:    1.0
+    Modified:   2014-06-12 19:34 by Christian Berndt
+    Version:    1.1
     
  -->
 <f:view xmlns="http://www.w3.org/1999/xhtml"
@@ -18,9 +18,10 @@
 
 	<h:head />
 
-	<h:body>
-		<h:messages styleClass="messages" />
-		
+	<h:body styleClass="subscription-portlet">
+	
+		<p:messages escape="false"/>
+				
 		<h:outputText value="#{i18n['in-order-to-unsubscribe']}"/>
 		
 	</h:body>
