@@ -24,6 +24,7 @@ package ch.inofix.portlet.newsletter.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -57,8 +58,8 @@ import com.wcs.newsletter.service.SubscriptionLocalServiceUtil;
  * 
  * @author Christian Berndt
  * @created 2014-06-05 11:01
- * @modified 2014-06-10 19:51
- * @version 1.2
+ * @modified 2014-06-12 20:00
+ * @version 1.4
  * 
  */
 @ManagedBean
@@ -144,10 +145,10 @@ public class SubscriptionController {
 						.updateSubscription(subscription);
 
 			}
-			
-			// Because in WcsNewsletter service an increment key is used, 
+
+			// Because in WcsNewsletter service an increment key is used,
 			// we must update the subscriptionId here
-			subscriptionId = subscription.getSubscriptionId(); 
+			subscriptionId = subscription.getSubscriptionId();
 
 			// Update the list of associated categories
 			List<SubscriptionCategory> subscriptionCategories = SubscriptionCategoryLocalServiceUtil
@@ -199,10 +200,30 @@ public class SubscriptionController {
 
 			}
 
-			String msg = LanguageUtil.get(getThemeDisplay().getLocale(),
-					"successfully-saved-your-subscription");
+			Locale locale = getThemeDisplay().getLocale();
 
-			addSuccessMessage(msg);
+			StringBuilder sb = new StringBuilder();
+			sb.append(LanguageUtil.get(locale,
+					"your-subscription-has-been-saved-with-the-address"));
+			sb.append(" <div class=\"e-mail\"><strong>");
+			sb.append(email);
+			sb.append("</strong></div> ");
+			sb.append(LanguageUtil.get(locale, "and-the-following-categories"));
+			sb.append(" <ul>");
+			for (String selectedCategoryId : selectedCategoryIds) {
+
+				long categoryId = Long.valueOf(selectedCategoryId);
+				Category category = CategoryLocalServiceUtil
+						.getCategory(categoryId);
+				
+				sb.append("<li>");
+				sb.append(category.getName(locale));
+				sb.append("</li>");
+
+			}
+			sb.append("</ul>");
+			
+			addSuccessMessage(sb.toString());
 
 		} catch (SystemException se) {
 
@@ -237,10 +258,10 @@ public class SubscriptionController {
 
 		logger.info("Executing getCategories()");
 
-		return CategoryLocalServiceUtil.getCategories(); 
+		return CategoryLocalServiceUtil.getCategories();
 		// TODO: Find a cleaner solution for the Locale to String conversion
-//		return CategoryLocalServiceUtil.findByLocale(""
-//				+ getThemeDisplay().getLocale());
+		// return CategoryLocalServiceUtil.findByLocale(""
+		// + getThemeDisplay().getLocale());
 
 	}
 
