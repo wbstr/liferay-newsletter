@@ -43,6 +43,7 @@ import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.Label;
 import com.wcs.newsletter.model.Newsletter;
 import com.wcs.newsletter.model.Recipient;
+import com.wcs.newsletter.model.impl.CategoryImpl;
 import com.wcs.newsletter.model.impl.NewsletterImpl;
 import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.service.NewsletterLocalServiceUtil;
@@ -53,6 +54,7 @@ import com.wcs.newsletter.util.NewsletterSender;
 import com.wcs.tool.DateUtil;
 import com.wcs.tool.ListUtil;
 import com.wcs.tool.StringUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +65,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -72,10 +75,14 @@ import javax.faces.context.PartialViewContext;
 import javax.portlet.PortletResponse;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 import org.primefaces.component.picklist.PickList;
 import org.primefaces.model.DualListModel;
+
 import com.wcs.newsletter.model.impl.LabelImpl;
 import com.wcs.newsletter.service.LabelLocalServiceUtil;
+import com.wcs.newsletter.service.persistence.CategoryFinderUtil;
+
 import java.util.Collections;
 
 @ManagedBean
@@ -535,21 +542,22 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
     public void initCategoryLocale() {
         if (categoryLocale == null) {
 
-            if (!getElem().isNew()) {
-                try {
-                    List<Category> userCategories = getElem().getCategories();
-                    if (ListUtil.isNotEmpty(userCategories)) {
-                        Category category = userCategories.get(0);
-                        categoryLocale = category.getLocale();
-                    }
-                } catch (Exception e) {
-                    logger.error(e);
-                }
-            }
-
-            if (categoryLocale == null) {
-                categoryLocale = LiferayUtil.getLiferayFullLangCode();
-            }
+        	// obsolete and throws exceptions
+//            if (!getElem().isNew()) {
+//                try {
+//                    List<Category> userCategories = getElem().getCategories();
+//                    if (ListUtil.isNotEmpty(userCategories)) {
+//                        Category category = userCategories.get(0);
+//                        categoryLocale = category.getLocale();
+//                    }
+//                } catch (Exception e) {
+//                    logger.error(e);
+//                }
+//            }
+//
+//            if (categoryLocale == null) {
+//                categoryLocale = LiferayUtil.getLiferayFullLangCode();
+//            }
 
 
             //logger.info("initCategoryLocale {0}", new Object[]{categoryLocale});
@@ -571,7 +579,9 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
                 source.addAll(allCategories);
 
                 if (!getElem().isNew()) {
-                    List<Category> userCategories = getElem().getCategories();
+                	                	
+					List<Category> userCategories = CategoryLocalServiceUtil.findByNewsletterId(getId()); 
+                	
                     source.removeAll(userCategories);
                     target.addAll(userCategories);
                 }
@@ -677,16 +687,16 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
     }
 
     @Override
-    protected Newsletter persist() throws SystemException {
+    protected Newsletter persist() throws SystemException, PortalException {
         return newsletterSave();
     }
 
     @Override
-    protected Newsletter update() throws SystemException {
+    protected Newsletter update() throws SystemException, PortalException {
         return newsletterSave();
     }
 
-    public Newsletter newsletterSave() throws SystemException {
+    public Newsletter newsletterSave() throws SystemException, PortalException {
         getElem().setCategories(getCategoriesModel().getTarget());
         getElem().setContentId(String.valueOf(selectedWc.getArticleId()));
         getElem().setContentVersion(String.valueOf(selectedWc.getVersion()));

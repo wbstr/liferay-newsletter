@@ -34,12 +34,15 @@ import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.Newsletter;
 import com.wcs.newsletter.model.Subscription;
 import com.wcs.newsletter.model.SubscriptionCategory;
+import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.service.SubscriptionCategoryLocalServiceUtil;
 import com.wcs.tool.StringUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
@@ -79,7 +82,8 @@ public class NewsletterSenderList {
 //            newsletterCategory = NewsletterCategoryLocalServiceUtil.getNewsletterCategories(0, NewsletterCategoryLocalServiceUtil.getNewsletterCategoriesCount());
             recipients = new ArrayList<SendListElem>();
 
-            List<Category> categories = newsletter.getCategories();
+            List<Category> categories = CategoryLocalServiceUtil.findByNewsletterId(newsletter.getNewsletterId()); 
+//            List<Category> categories = newsletter.getCategories();
             for (Category category : categories) {
                 Long categoryId = category.getCategoryId();
 

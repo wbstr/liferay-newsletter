@@ -126,7 +126,7 @@
                     <br clear="all" />
                     <h:outputText value="#{messages.admin_subscriptions_categories}:" styleClass="outputText" />
                     <p:panelGrid columns="1" styleClass="panelGrid newsletterEditPanelGrid">
-                        <p:pickList id="categories" disabled="#{!newsletterEditController.canEdit}" var="category" value="#{newsletterEditController.categoriesModel}" style="width:750px" itemLabel="#{category.name}" itemValue="#{category}" converter="categoryConverter">
+                        <p:pickList id="categories" disabled="#{!newsletterEditController.canEdit}" var="category" value="#{newsletterEditController.categoriesModel}" style="width:750px" itemLabel="#{category.getName($locale)}" itemValue="#{category}" converter="categoryConverter">
                             <f:facet name="sourceCaption">#{messages.admin_newsletters_picklist_available}</f:facet>  
                             <f:facet name="targetCaption">#{messages.admin_newsletters_picklist_selected}</f:facet>  
                         </p:pickList>                            

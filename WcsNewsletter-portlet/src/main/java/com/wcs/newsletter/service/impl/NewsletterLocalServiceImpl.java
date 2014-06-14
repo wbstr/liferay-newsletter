@@ -22,16 +22,21 @@ package com.wcs.newsletter.service.impl;
  * #L%
  */
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.Newsletter;
 import com.wcs.newsletter.model.Recipient;
 import com.wcs.newsletter.model.SubscriptionCategory;
 import com.wcs.newsletter.model.impl.RecipientImpl;
+import com.wcs.newsletter.service.CategoryLocalServiceUtil;
+import com.wcs.newsletter.service.NewsletterLocalServiceUtil;
 import com.wcs.newsletter.service.base.NewsletterLocalServiceBaseImpl;
 import com.wcs.newsletter.service.persistence.NewsletterUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.wcs.newsletter.model.Label;
@@ -46,7 +51,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         return NewsletterUtil.findByParentId(parentId);
     }    
     
-    public List<Category> getCategories(Newsletter newsletter) throws SystemException {
+    public List<Category> getCategories(Newsletter newsletter) throws SystemException, PortalException {
         List<Category> categories = new ArrayList<Category>();
         if (newsletter == null) {
             return categories;
@@ -58,7 +63,8 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         
         Long newsletterId = newsletter.getNewsletterId();
         
-        categories = newsletterPersistence.getCategories(newsletterId);
+        	categories = CategoryLocalServiceUtil.findByNewsletterId(newsletterId); 
+//        categories = newsletterPersistence.getCategories(newsletterId);
         
         return categories;
     }
@@ -101,7 +107,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         return labels;
     }    
     
-    public Newsletter save(Newsletter newsletter) throws SystemException {
+    public Newsletter save(Newsletter newsletter) throws PortalException, SystemException {
         if (newsletter.isNew()) {
             newsletter = newsletterLocalService.addNewsletter(newsletter);
         } else {
@@ -125,7 +131,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         return newsletter;
     }
     
-    public Newsletter saveChild(Newsletter newsletter) throws SystemException {
+    public Newsletter saveChild(Newsletter newsletter) throws SystemException, PortalException {
         newsletter.setNew(true);
         newsletter = save(newsletter);
         Long newsletterId = newsletter.getNewsletterId();
