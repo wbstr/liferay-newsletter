@@ -22,9 +22,11 @@ package ch.inofix.portlet.newsletter.controller;
  * #L%
  */
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -36,11 +38,13 @@ import ch.inofix.portlet.newsletter.dto.SubscriptionKeySet;
 import ch.inofix.portlet.newsletter.util.SubscriptionKeyUtil;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
+import com.liferay.faces.portal.el.I18N;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.wcs.newsletter.model.Category;
@@ -58,8 +62,8 @@ import com.wcs.newsletter.service.SubscriptionLocalServiceUtil;
  * 
  * @author Christian Berndt
  * @created 2014-06-05 11:01
- * @modified 2014-06-12 20:00
- * @version 1.4
+ * @modified 2014-06-23 11:19
+ * @version 1.5
  * 
  */
 @ManagedBean
@@ -81,9 +85,79 @@ public class SubscriptionController {
 	 */
 	// From JsfUtil, a candidate for an AbstractController
 	public static void addSuccessMessage(String msg) {
+		
 		FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO,
 				msg, msg);
 		FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+	}
+
+	/**
+	 * 
+	 * @param key
+	 * @param args
+	 * @since 1.5
+	 */
+	public static void addSuccessMessage(String key, Object[] args) {
+
+		Locale locale = FacesContext.getCurrentInstance().getViewRoot()
+				.getLocale();
+		
+		String message = getMessage(key, args, locale);
+
+		FacesMessage facesMessage = new FacesMessage(
+				FacesMessage.SEVERITY_INFO, message, null);
+		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+
+	}
+	
+	/** 
+	 * 
+	 * @param key
+	 * @param args
+	 * @return
+	 * @since 1.5
+	 * 
+	 */
+	// From FacesMessageUtil
+	// TODO: Move to an utility class
+	public static String getMessage(String key, Object[] args) {
+		
+		return getMessage(key, args, null); 
+		
+	}
+	
+	/** 
+	 * 
+	 * @param key
+	 * @param args
+	 * @return
+	 * @since 1.5
+	 * 
+	 */
+	// From FacesMessageUtil
+	// TODO: Move to an utility class
+	public static String getMessage(String key, Object[] args, Locale locale) {
+		
+		String message = key;
+		ResourceBundle resourceBundle = null; 
+
+		try {
+
+			if (resourceBundle == null) {
+				resourceBundle = ResourceBundle.getBundle("Language", locale);
+			}
+
+			message = resourceBundle.getString(key);
+
+			if (args != null) {
+				message = MessageFormat.format(message, args);
+			}
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return message;
 	}
 
 	/**
@@ -201,29 +275,31 @@ public class SubscriptionController {
 			}
 
 			Locale locale = getThemeDisplay().getLocale();
-
-			StringBuilder sb = new StringBuilder();
-			sb.append(LanguageUtil.get(locale,
-					"your-subscription-has-been-saved-with-the-address"));
-			sb.append(" <div class=\"e-mail\"><strong>");
-			sb.append(email);
-			sb.append("</strong></div> ");
-			sb.append(LanguageUtil.get(locale, "and-the-following-categories"));
-			sb.append(" <ul>");
-			for (String selectedCategoryId : selectedCategoryIds) {
-
-				long categoryId = Long.valueOf(selectedCategoryId);
-				Category category = CategoryLocalServiceUtil
-						.getCategory(categoryId);
-				
-				sb.append("<li>");
-				sb.append(category.getName(locale));
-				sb.append("</li>");
-
-			}
-			sb.append("</ul>");
 			
-			addSuccessMessage(sb.toString());
+
+//			StringBuilder sb = new StringBuilder();		
+//			
+//			sb.append(LanguageUtil.get(locale,
+//					"your-subscription-has-been-saved-with-the-address"));
+//			sb.append(" <div class=\"e-mail\"><strong>");
+//			sb.append(email);
+//			sb.append("</strong></div> ");
+//			sb.append(LanguageUtil.get(locale, "and-the-following-categories"));
+//			sb.append(" <ul>");
+//			for (String selectedCategoryId : selectedCategoryIds) {
+//
+//				long categoryId = Long.valueOf(selectedCategoryId);
+//				Category category = CategoryLocalServiceUtil
+//						.getCategory(categoryId);
+//				
+//				sb.append("<li>");
+//				sb.append(category.getName(locale));
+//				sb.append("</li>");
+//
+//			}
+//			sb.append("</ul>");
+			
+			addSuccessMessage("your-subscription-has-been-saved-with-the-address-x", new String[]{email});
 
 		} catch (SystemException se) {
 

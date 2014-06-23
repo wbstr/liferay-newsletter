@@ -4,8 +4,8 @@
     view.xhtml: Default view of the newsletter subscription portlet.
     
     Created:    2014-06-05 11:23 by Christian Berndt
-    Modified:   2014-06-12 19:34 by Christian Berndt
-    Version:    1.3
+    Modified:   2014-06-23 10:53 by Christian Berndt
+    Version:    1.4
     
  -->
 <f:view xmlns="http://www.w3.org/1999/xhtml"
@@ -20,7 +20,7 @@
 	<h:body styleClass="subscription-portlet">
 		<h:form>
 
-			<h:messages styleClass="messages" />
+			<p:messages styleClass="messages" escape="false"/>
 
 			<h:panelGrid>
 
@@ -34,10 +34,8 @@
 							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 
 					</h:inputText>
-					<h:message for="email" />
-				</h:panelGroup>
+					<p:message for="email" escape="false" />
 
-				<h:panelGroup>
 					<h:outputLabel for="subscriptions"
 						value="#{i18n['categories-label']}" />
 					<h:selectManyListbox required="true"
@@ -50,16 +48,16 @@
 							itemLabel="#{category.getName(#locale)}" />
 
 					</h:selectManyListbox>
-					<h:message for="subscriptions" />
-				</h:panelGroup>
+					<p:message for="subscriptions" escape="false"/>
 
-				<h:panelGroup>
-					<h:commandButton value="Save"
-						actionListener="#{subscriptionController.saveSubscription}" action="confirmation">
-						<f:ajax execute="@form" render="@form" />
-					</h:commandButton>
-				</h:panelGroup>
 
+				</h:panelGroup>
+				
+				<h:commandButton value="#{i18n['submit']}"
+					actionListener="#{subscriptionController.saveSubscription}" action="confirmation">
+					<f:ajax execute="@form" render="@form" />
+				</h:commandButton>
+					
 			</h:panelGrid>
 		</h:form>
 	</h:body>

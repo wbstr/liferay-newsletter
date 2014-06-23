@@ -12,7 +12,7 @@
 	<artifactId>subscription-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>subscription-portlet Portlet</name>
-	<version>1.0.8</version>
+	<version>1.0.9</version>
 	<build>
 		<plugins>
 			<plugin>
@@ -53,6 +53,25 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+	       <plugin>
+	           <groupId>com.google.code.maven-replacer-plugin</groupId>
+	           <artifactId>replacer</artifactId>
+	           <version>1.5.3</version>
+	           <executions>
+	               <execution>
+	                   <phase>package</phase>
+	                   <goals>
+	                       <goal>replace</goal>
+	                   </goals>                   
+	               </execution>
+	           </executions>
+				<configuration>
+					<file>target/${project.artifactId}-${version}/WEB-INF/liferay-plugin-package.properties</file>
+					<regex>false</regex>
+					<token>$VERSION$</token>
+					<value>${version}</value>
+				</configuration>
+	       </plugin>
 		</plugins>
 	</build>
 	<dependencies>

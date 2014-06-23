@@ -21,6 +21,10 @@
  .subscription-portlet .e-mail {
  	text-align: center;
  }
+ 
+ .subscription-portlet .ui-message-error {
+ 	display: inline; 
+ }
 
  
  
