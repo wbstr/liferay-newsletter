@@ -4,8 +4,8 @@
     view.xhtml: Default view of the newsletter subscription portlet.
     
     Created:    2014-06-05 11:23 by Christian Berndt
-    Modified:   2014-06-23 10:53 by Christian Berndt
-    Version:    1.4
+    Modified:   2014-06-23 12:32 by Christian Berndt
+    Version:    1.5
     
  -->
 <f:view xmlns="http://www.w3.org/1999/xhtml"
@@ -35,6 +35,11 @@
 
 					</h:inputText>
 					<p:message for="email" escape="false" />
+					
+				</h:panelGroup>
+				
+				
+				<h:panelGroup rendered="#{subscriptionController.categories.size() > 1}">
 
 					<h:outputLabel for="subscriptions"
 						value="#{i18n['categories-label']}" />

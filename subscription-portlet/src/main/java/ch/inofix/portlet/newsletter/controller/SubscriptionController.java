@@ -23,6 +23,7 @@ package ch.inofix.portlet.newsletter.controller;
  */
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,13 +39,11 @@ import ch.inofix.portlet.newsletter.dto.SubscriptionKeySet;
 import ch.inofix.portlet.newsletter.util.SubscriptionKeyUtil;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.faces.portal.el.I18N;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.wcs.newsletter.model.Category;
@@ -62,8 +61,8 @@ import com.wcs.newsletter.service.SubscriptionLocalServiceUtil;
  * 
  * @author Christian Berndt
  * @created 2014-06-05 11:01
- * @modified 2014-06-23 11:19
- * @version 1.5
+ * @modified 2014-06-23 14:08
+ * @version 1.6
  * 
  */
 @ManagedBean
@@ -74,6 +73,7 @@ public class SubscriptionController {
 			.getLogger(SubscriptionController.class);
 
 	// Configurable properties
+	private long defaultCategoryId = -1;
 	private String email = null;
 	private List<String> selectedCategoryIds = null;
 
@@ -187,8 +187,15 @@ public class SubscriptionController {
 			logger.debug("selectedCategoryIds.size() = "
 					+ selectedCategoryIds.size());
 		}
-
+		
 		try {
+			
+			// TODO: find a cleaner solution for this
+			if (getCategories().size() == 1) {
+				String categoryId = String.valueOf(getCategories().get(0).getCategoryId()); 
+				selectedCategoryIds = new ArrayList<String>();
+				selectedCategoryIds.add(categoryId);
+			}
 
 			List<Subscription> subscriptions = SubscriptionLocalServiceUtil
 					.findByEmail(email);
@@ -273,31 +280,6 @@ public class SubscriptionController {
 						.addSubscriptionCategory(subscriptionCategory);
 
 			}
-
-			Locale locale = getThemeDisplay().getLocale();
-			
-
-//			StringBuilder sb = new StringBuilder();		
-//			
-//			sb.append(LanguageUtil.get(locale,
-//					"your-subscription-has-been-saved-with-the-address"));
-//			sb.append(" <div class=\"e-mail\"><strong>");
-//			sb.append(email);
-//			sb.append("</strong></div> ");
-//			sb.append(LanguageUtil.get(locale, "and-the-following-categories"));
-//			sb.append(" <ul>");
-//			for (String selectedCategoryId : selectedCategoryIds) {
-//
-//				long categoryId = Long.valueOf(selectedCategoryId);
-//				Category category = CategoryLocalServiceUtil
-//						.getCategory(categoryId);
-//				
-//				sb.append("<li>");
-//				sb.append(category.getName(locale));
-//				sb.append("</li>");
-//
-//			}
-//			sb.append("</ul>");
 			
 			addSuccessMessage("your-subscription-has-been-saved-with-the-address-x", new String[]{email});
 
@@ -357,6 +339,15 @@ public class SubscriptionController {
 	}
 
 	// Getters and setters
+	public long getDefaultCategoryId() {
+		
+		return defaultCategoryId;
+	}
+
+	public void setDefaultCategoryId(long defaultCategoryId) {
+		this.defaultCategoryId = defaultCategoryId;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -366,6 +357,7 @@ public class SubscriptionController {
 	}
 
 	public List<String> getSelectedCategoryIds() {
+		
 		return selectedCategoryIds;
 	}
 
