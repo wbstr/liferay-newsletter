@@ -5,6 +5,9 @@
     <portlet>
         <portlet-name>webstar-newsletter-admin</portlet-name>
         <icon>/css/images/wcs-newsletter-icon-small.png</icon>
+		<configuration-action-class>
+			com.wcs.newsletter.action.NewsletterAdminConfigurationActionImpl
+		</configuration-action-class>
         <control-panel-entry-category>content</control-panel-entry-category>
         <control-panel-entry-weight>100</control-panel-entry-weight>         
         <instanceable>false</instanceable>

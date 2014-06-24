@@ -25,15 +25,19 @@ package com.wcs.newsletter.util;
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalArticleDisplay;
+import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.wcs.newsletter.dto.NewsletterSenderList;
 import com.wcs.newsletter.model.Newsletter;
 import com.wcs.newsletter.tools.Tools;
 import com.wcs.tool.DateUtil;
 import com.wcs.tool.StringUtil;
+
 import javax.mail.internet.InternetAddress;
 
 public class NewsletterSender {
@@ -42,11 +46,13 @@ public class NewsletterSender {
     private Newsletter newsletter;
     private ThemeDisplay themeDisplay;
     private NewsletterSenderList recList;
+    private String templateKey;
 
-    public NewsletterSender(Newsletter newsletter, NewsletterSenderList recList, ThemeDisplay themeDisplay) {
+    public NewsletterSender(Newsletter newsletter, NewsletterSenderList recList, ThemeDisplay themeDisplay, String templateKey) {
         this.newsletter = newsletter;
         this.recList = recList;
         this.themeDisplay = themeDisplay;
+        this.templateKey = templateKey; 
     }
 
     public void send() throws Exception {
@@ -56,7 +62,7 @@ public class NewsletterSender {
 
         logger.info("journalArticle: {0}", new Object[]{journalArticle});
 
-        String content = getArticleContent(journalArticle, languageId);
+        String content = getArticleContent(journalArticle, languageId, templateKey);
 
         InternetAddress from = new InternetAddress(newsletter.getSender());        
         String subject = newsletter.getSubject();
@@ -69,15 +75,23 @@ public class NewsletterSender {
         thread.start();
     }
 
-    private String getArticleContent(JournalArticle article, String locale) throws Exception {
+    private String getArticleContent(JournalArticle article, String languageId, String templateKey) throws Exception {
         try {
             String articleMultiLanguageXMLContent = article.getContent();
             String templateContent;
             FileEntry newsletterTemplate = DLAppServiceUtil.getFileEntry(Long.parseLong(newsletter.getTemplateId()));
             templateContent = Tools.InputStream2Str(newsletterTemplate.getContentStream(), false);
-            String localizedContent = templateContent.replace("###CONTENT###", JournalContentUtil.getContent(article.getGroupId(), article.getArticleId(), null, locale, articleMultiLanguageXMLContent));
+            
+			JournalArticleDisplay articleDisplay = JournalArticleLocalServiceUtil
+					.getArticleDisplay(article, templateKey, Constants.VIEW,
+							languageId, 1, null, null);
+			
+			String articleContent = articleDisplay.getContent();
+			
+            String localizedContent = templateContent.replace("###CONTENT###", articleContent);
+//            String localizedContent = templateContent.replace("###CONTENT###", JournalContentUtil.getContent(article.getGroupId(), article.getArticleId(), null, locale, articleMultiLanguageXMLContent));
             localizedContent = localizedContent.replace("###sendDate###", DateUtil.dateToString(newsletter.getCreationTime(), "yyyy.MM.dd"));
-            localizedContent = localizedContent.replace("###newsletterTitle###", article.getTitle(locale));
+            localizedContent = localizedContent.replace("###newsletterTitle###", article.getTitle(languageId));
             localizedContent = localizedContent.replaceAll("\"\\/documents", "\"" + themeDisplay.getURLPortal() + "\\/documents");
             return localizedContent;
         } catch (Exception ex) {
