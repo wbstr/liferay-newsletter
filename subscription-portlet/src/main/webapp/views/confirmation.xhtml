@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!-- 
+    confirmation.xhtml: Display confirmation infos after successfull 
+    subscription.
+    
+    Created:    2014-06-11 15:08 by Christian Berndt
+    Modified:   2014-06-12 19:34 by Christian Berndt
+    Version:    1.1
+    
+ -->
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head />
+
+	<h:body styleClass="subscription-portlet">
+	
+		<p:messages escape="false"/>
+				
+		<h:outputText value="#{i18n['in-order-to-unsubscribe']}"/>
+		
+	</h:body>
+</f:view>

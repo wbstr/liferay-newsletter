@@ -24,11 +24,14 @@ package com.wcs.newsletter.service.impl;
 
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.impl.CategoryImpl;
 import com.wcs.newsletter.service.base.CategoryLocalServiceBaseImpl;
+import com.wcs.newsletter.service.persistence.CategoryFinderUtil;
 import com.wcs.newsletter.service.persistence.CategoryUtil;
+
 import java.util.List;
 
 public class CategoryLocalServiceImpl extends CategoryLocalServiceBaseImpl {
@@ -55,4 +58,10 @@ public class CategoryLocalServiceImpl extends CategoryLocalServiceBaseImpl {
         throws com.liferay.portal.kernel.exception.SystemException {
         return CategoryUtil.findByLocale(locale);
     }
+    
+    public List<Category> findByNewsletterId(long newsletterId) throws PortalException, SystemException {
+    	
+    	return CategoryFinderUtil.findByNewsletterId(newsletterId); 
+    }
+
 }

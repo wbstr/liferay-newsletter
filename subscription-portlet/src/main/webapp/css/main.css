@@ -1,0 +1,30 @@
+/**
+ * main.css: css styles of the newsletter-subscription-portlet
+ *
+ * Created:     2014-06-05 12:34 by Christian Berndt
+ * Modified:    2014-06-12 19:32 by Christian Berndt
+ * Version:     1.1
+ */
+ .subscription-portlet {
+ 	font-size: 12px;
+ }
+ 
+ .subscription-portlet ul.messages {
+     list-style-type: none;     /* Do not display bullets for single messages */
+     margin: 0;                 /* No margin for message lists */
+ }
+ 
+ .subscription-portlet .ui-messages-info-summary {
+ 	font-weight: normal;
+ }
+ 
+ .subscription-portlet .e-mail {
+ 	text-align: center;
+ }
+ 
+ .subscription-portlet .ui-message-error {
+ 	display: inline; 
+ }
+
+ 
+ 

@@ -5,7 +5,7 @@
 
     <entity name="Category" local-service="true" remote-service="false">
         <column name="categoryId" db-name="categoryId" type="long" primary="true" id-type="increment"></column>
-        <column name="name" db-name="name" type="String"></column>
+        <column name="name" db-name="name" type="String" localized="true"></column>
         <column name="locale" db-name="locale" type="String"></column>
         <column name="newsletters" type="Collection" entity="Newsletter" mapping-table="Newsletter_Category"/>
         
@@ -36,8 +36,9 @@
         </finder> 
     </entity>  
     <entity name="SubscriptionCategory" table="WcsNewsletter_Subscription_Category" local-service="true" remote-service="false">
-        <column name="subscriptionId" db-name="subscriptionId" type="long" primary="true"></column>
-        <column name="categoryId" db-name="categoryId" type="long" primary="true"></column>
+        <column name="subscriptionCategoryId" db-name="subscriptionCategoryId" type="long" primary="true"></column>
+        <column name="subscriptionId" db-name="subscriptionId" type="long" primary="false"></column>
+        <column name="categoryId" db-name="categoryId" type="long" primary="false"></column>
         <column name="confirmationKey" db-name="confirmationKey" type="String"></column>        
         <column name="cancellationKey" db-name="cancellationKey" type="String"></column> 
         <column name="status" db-name="status" type="String"></column> 

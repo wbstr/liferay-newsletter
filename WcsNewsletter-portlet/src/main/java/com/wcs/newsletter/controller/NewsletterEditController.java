@@ -25,6 +25,8 @@ import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.model.AssetTag;
@@ -33,8 +35,8 @@ import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.liferay.portlet.journal.model.JournalArticle;
+import com.liferay.portlet.journal.model.JournalArticleDisplay;
 import com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil;
-import com.liferay.portlet.journalcontent.util.JournalContentUtil;
 import com.wcs.newsletter.comparator.AssetTagComparator;
 import com.wcs.newsletter.dto.NewsletterListElem;
 import com.wcs.newsletter.dto.NewsletterListElemDataModel;
@@ -53,6 +55,7 @@ import com.wcs.newsletter.util.NewsletterSender;
 import com.wcs.tool.DateUtil;
 import com.wcs.tool.ListUtil;
 import com.wcs.tool.StringUtil;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,19 +66,26 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.PartialViewContext;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+
 import org.primefaces.component.picklist.PickList;
 import org.primefaces.model.DualListModel;
+
 import com.wcs.newsletter.model.impl.LabelImpl;
 import com.wcs.newsletter.service.LabelLocalServiceUtil;
+
 import java.util.Collections;
 
 @ManagedBean
@@ -98,6 +108,8 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
     private List<AssetTag> tags;
     private List<AssetTag> selectedTags;
     private String labelStr;
+    
+    private String templateId; 
 
     public String getLabelStr() {
         return labelStr;
@@ -530,26 +542,42 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
         initCategoriesModel();
         getWebContentList();
         initChildModel();
+        
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
+		ExternalContext externalContext = facesContext.getExternalContext();
+
+		PortletRequest portletRequest = (PortletRequest) externalContext
+				.getRequest();
+
+		PortletPreferences preferences = portletRequest.getPreferences();
+		
+		templateId = PrefsParamUtil.getString(preferences,
+				portletRequest, "templateId");
+
+		logger.debug("templateId = " + templateId);
     }
 
     public void initCategoryLocale() {
         if (categoryLocale == null) {
 
-            if (!getElem().isNew()) {
-                try {
-                    List<Category> userCategories = getElem().getCategories();
-                    if (ListUtil.isNotEmpty(userCategories)) {
-                        Category category = userCategories.get(0);
-                        categoryLocale = category.getLocale();
-                    }
-                } catch (Exception e) {
-                    logger.error(e);
-                }
-            }
-
-            if (categoryLocale == null) {
-                categoryLocale = LiferayUtil.getLiferayFullLangCode();
-            }
+        	// obsolete and throws exceptions
+//            if (!getElem().isNew()) {
+//                try {
+//                    List<Category> userCategories = getElem().getCategories();
+//                    if (ListUtil.isNotEmpty(userCategories)) {
+//                        Category category = userCategories.get(0);
+//                        categoryLocale = category.getLocale();
+//                    }
+//                } catch (Exception e) {
+//                    logger.error(e);
+//                }
+//            }
+//
+//            if (categoryLocale == null) {
+//                categoryLocale = LiferayUtil.getLiferayFullLangCode();
+//            }
 
 
             //logger.info("initCategoryLocale {0}", new Object[]{categoryLocale});
@@ -566,11 +594,14 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             List<Category> target = new ArrayList<Category>();
 
             try {
-                List<Category> allCategories = CategoryLocalServiceUtil.findByLocale(getCategoryLocale());
+                List<Category> allCategories = CategoryLocalServiceUtil.getCategories(); 
+//                List<Category> allCategories = CategoryLocalServiceUtil.findByLocale(getCategoryLocale());
                 source.addAll(allCategories);
 
                 if (!getElem().isNew()) {
-                    List<Category> userCategories = getElem().getCategories();
+                	                	
+					List<Category> userCategories = CategoryLocalServiceUtil.findByNewsletterId(getId()); 
+                	
                     source.removeAll(userCategories);
                     target.addAll(userCategories);
                 }
@@ -676,16 +707,16 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
     }
 
     @Override
-    protected Newsletter persist() throws SystemException {
+    protected Newsletter persist() throws SystemException, PortalException {
         return newsletterSave();
     }
 
     @Override
-    protected Newsletter update() throws SystemException {
+    protected Newsletter update() throws SystemException, PortalException {
         return newsletterSave();
     }
 
-    public Newsletter newsletterSave() throws SystemException {
+    public Newsletter newsletterSave() throws SystemException, PortalException {
         getElem().setCategories(getCategoriesModel().getTarget());
         getElem().setContentId(String.valueOf(selectedWc.getArticleId()));
         getElem().setContentVersion(String.valueOf(selectedWc.getVersion()));
@@ -714,7 +745,7 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             List<Recipient> recipientsSaver = newsletter.getRecipients();
             NewsletterSenderList recipients = new NewsletterSenderList(newsletter);
 
-            NewsletterSender newsletterSender = new NewsletterSender(newsletter, recipients, getThemeDisplay());
+            NewsletterSender newsletterSender = new NewsletterSender(newsletter, recipients, getThemeDisplay(), templateId);
             newsletterSender.send();
         } catch (Exception e) {
             logger.error(e);
@@ -740,7 +771,7 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
 
                 // List<Recipient> recipientsSaver = newsletter.getRecipients();
                 NewsletterSenderList recipients = new NewsletterSenderList(newsletter, testEmail);
-                NewsletterSender newsletterSender = new NewsletterSender(newsletter, recipients, getThemeDisplay());
+                NewsletterSender newsletterSender = new NewsletterSender(newsletter, recipients, getThemeDisplay(), templateId);
                 newsletterSender.send();
             }
         } catch (Exception e) {
@@ -784,16 +815,30 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
         }
     }
 
-    private String getArticleContent(JournalArticle article, String locale, Newsletter newsletter) throws Exception {
+    private String getArticleContent(JournalArticle article, String languageId, Newsletter newsletter) throws Exception {
         try {
-            String articleMultiLanguageXMLContent = article.getContent();
+        	
+        	logger.info("Executing getArticleContent()."); 
+        	logger.debug("templateId = " + templateId);
+        	        	
+//            String articleMultiLanguageXMLContent = article.getContent();
             String templateContent;
+            String templateKey = templateId; 
             FileEntry newsletterTemplate = DLAppServiceUtil.getFileEntry(Long.parseLong(getElem().getChild().getTemplateId()));
             templateContent = Tools.InputStream2Str(newsletterTemplate.getContentStream(), false);
-            String localizedContent = templateContent.replace("###CONTENT###", JournalContentUtil.getContent(article.getGroupId(), article.getArticleId(), null, locale, articleMultiLanguageXMLContent));
+			
+			JournalArticleDisplay articleDisplay = JournalArticleLocalServiceUtil
+					.getArticleDisplay(article, templateKey, Constants.VIEW,
+							languageId, 1, null, null);
+			
+			String articleContent = articleDisplay.getContent();
+            
+//            String articleContent = JournalContentUtil.getContent(article.getGroupId(), article.getArticleId(), null, locale, articleMultiLanguageXMLContent); 
+            String localizedContent = templateContent.replace("###CONTENT###", articleContent);
+//            String localizedContent = templateContent.replace("###CONTENT###", JournalContentUtil.getContent(article.getGroupId(), article.getArticleId(), null, locale, articleMultiLanguageXMLContent));
             localizedContent = localizedContent.replace("###sendDate###", DateUtil.dateToString(newsletter.getCreationTime(), "yyyy.MM.dd", getThemeDisplay().getLocale()));
 //            System.out.println(newsletter.getCreationTime());
-            localizedContent = localizedContent.replace("###newsletterTitle###", article.getTitle(locale));
+            localizedContent = localizedContent.replace("###newsletterTitle###", article.getTitle(languageId));
             localizedContent = localizedContent.replaceAll("<img alt=\"\" src=\"\\/documents", "<img alt=\"\" src=\"" + getThemeDisplay().getURLPortal() + "\\/documents");
             return localizedContent;
         } catch (Exception ex) {

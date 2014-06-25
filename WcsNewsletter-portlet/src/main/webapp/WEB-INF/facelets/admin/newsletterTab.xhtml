@@ -104,12 +104,8 @@
                         <h:outputText value="#{messages.admin_newsletters_sender}:" styleClass="outputText" /><br />
                         <h:inputText id="sender" value="#{newsletterEditController.elem.sender}" label="#{messages.admin_newsletters_sender}" required="true" styleClass="inputText newsletterEditInput" disabled="#{!newsletterEditController.canEdit}" readonly="#{!newsletterEditController.canEdit}"  />  
                         <br /><br />
-                        <h:outputText value="#{messages.admin_categories_category_locale}:" styleClass="outputText" /><br />
-                        <p:selectOneMenu style="width:348px" id="locale" value="#{newsletterEditController.categoryLocale}" styleClass="inputText newsletterEditInput" disabled="#{!newsletterEditController.canEdit}" >
-                            <f:selectItems value="#{newsletterEditController.availableLocales}" var="locale" itemValue="#{locale.toString()}" itemLabel="#{locale.displayName}" />
-                            <p:ajax update="categories" listener="#{newsletterEditController.onCategoryLocaleChange}" />                            
-                        </p:selectOneMenu>
-                        <br /><br />      
+                        <!-- removed obsolete language filter -->
+                          
                     </p:outputPanel>
                     <p:outputPanel  style="float:left;width:395px;">
                         <h:outputText value="#{messages.admin_newsletters_content}:" styleClass="outputText" /><br />
@@ -130,34 +126,16 @@
                     <br clear="all" />
                     <h:outputText value="#{messages.admin_subscriptions_categories}:" styleClass="outputText" />
                     <p:panelGrid columns="1" styleClass="panelGrid newsletterEditPanelGrid">
-                        <p:pickList id="categories" disabled="#{!newsletterEditController.canEdit}" var="category" value="#{newsletterEditController.categoriesModel}" style="width:750px" itemLabel="#{category.name}" itemValue="#{category}" converter="categoryConverter">
+                        <p:pickList id="categories" disabled="#{!newsletterEditController.canEdit}" var="category" value="#{newsletterEditController.categoriesModel}" style="width:750px" itemLabel="#{category.getName($locale)}" itemValue="#{category}" converter="categoryConverter">
                             <f:facet name="sourceCaption">#{messages.admin_newsletters_picklist_available}</f:facet>  
                             <f:facet name="targetCaption">#{messages.admin_newsletters_picklist_selected}</f:facet>  
                         </p:pickList>                            
                     </p:panelGrid>
                     <br />
+                    
+                    <!-- removed obsolete tag selection -->
                     <p:outputPanel>
-                        <h:outputText value="#{messages.admin_newsletter_tags}:" styleClass="outputText" />
-                        <p:outputPanel id="tagSelector" layout="block" >
-                            <p:outputPanel id="tagContainer" layout="block" styleClass="#{newsletterEditController.tagContainerRendered ? 'tagContainer' : 'hiddentagContainer'}">
-                                <ui:repeat value="#{newsletterEditController.selectedTags}" var="tag" varStatus="status" >
-                                    <p:outputPanel layout="block" styleClass="tagWrapper">                                  
-                                        <h:outputText value="#{tag.name}" styleClass="tag" />
-                                        <p:commandButton icon="ui-icon-close" styleClass="closeButton" actionListener="#{newsletterEditController.removeLabel(tag)}" update="@form" disabled="#{!newsletterEditController.canEdit}" />  
-                                    </p:outputPanel>   
-                                </ui:repeat>                  
-                                <p:outputPanel layout="block" style="clear:both;"></p:outputPanel>
-                            </p:outputPanel>
-                            <p:outputPanel layout="block">
-                                <p:inputText id="labelStr" value="#{newsletterEditController.labelStr}" style="margin-right:10px" disabled="#{!newsletterEditController.canEdit}" />  
-                                <p:commandButton value="Új" actionListener="#{newsletterEditController.createLabel()}" update="@form" icon="ui-icon-plus" style="margin-right:10px" disabled="#{!newsletterEditController.canEdit}" />
-
-                                <p:selectCheckboxMenu id="tagSelectorCheckboxMenu" value="#{newsletterEditController.selectedTags}" label="#{messages.choose}" filter="true" filterMatchMode="startsWith" disabled="#{!newsletterEditController.canEdit}" style="vertical-align: middle;" converter="assetTagConverter" panelStyleClass="WcsNewsletterTagSelectorCheckboxMenuPanel" >
-                                    <f:selectItems value="#{newsletterEditController.tags}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag}"  />  
-                                    <p:ajax listener="#{newsletterEditController.onLabelChange}" update="tagContainer"></p:ajax>
-                                </p:selectCheckboxMenu>              
-                            </p:outputPanel>
-                        </p:outputPanel>  
+ 
                         <br />
                         <h:panelGroup>
                             <p:commandButton value="#{messages.admin_general_save}" actionListener="#{newsletterEditController.save()}" disabled="#{!newsletterEditController.canEdit}" update="@form :adminTabView:newsletterEditForm:sendButton" styleClass="marginRight" />                                              

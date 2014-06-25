@@ -22,46 +22,115 @@ package com.wcs.newsletter.controller;
  * #L%
  */
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.util.Portal;
+import com.liferay.portal.util.PortalUtil;
 import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.impl.CategoryImpl;
 import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.util.LiferayUtil;
+
+import java.awt.event.ActionEvent;
 import java.util.Locale;
+import java.util.Map;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
 @ViewScoped
-public class CategoryEditController extends AbstractEditController<Category, Long> {
+public class CategoryEditController extends
+		AbstractEditController<Category, Long> {
+	
+	private String languageId = null; 
+	private String name = null;
 
-    @Override
-    public Category initElem() throws Exception {
-        return CategoryLocalServiceUtil.getCategory((Long) getId());
-    }
+	@Override
+	public Category initElem() throws Exception {
+		return CategoryLocalServiceUtil.getCategory((Long) getId());
+	}
 
-    @Override
-    public Category initNewElem() {
-        return new CategoryImpl();
-    }
+	@Override
+	public Category initNewElem() {
+		return new CategoryImpl();
+	}
 
-    @Override
-    protected Category persist() throws SystemException {
-        return CategoryLocalServiceUtil.addCategory((Category) elem);
-    }
+	@Override
+	protected Category persist() throws SystemException {
 
-    @Override
-    protected Category update() throws SystemException {
-        return CategoryLocalServiceUtil.updateCategory((Category) elem);
-    }
+		logger.debug("Executing persist().");
+		
+		Map<Locale, String> nameMap = elem.getNameMap(); 
+		Locale locale = LiferayUtil.getLocale(languageId); 
+		nameMap.put(locale, name); 
+		elem.setNameMap(nameMap);
+		
+		return CategoryLocalServiceUtil.addCategory((Category) elem);
+	}
 
-    public Locale[] getAvailableLocales() {
-        return LiferayUtil.getAvailableLocales();
-    }
+	@Override
+	protected Category update() throws SystemException {
 
-    public void resetController() {
-        elem = null;
-        id = null;
-    }
+		logger.debug("Executing update().");
+		
+		Map<Locale, String> nameMap = elem.getNameMap(); 
+		Locale locale = LiferayUtil.getLocale(languageId); 
+		nameMap.put(locale, name); 
+		elem.setNameMap(nameMap);
+
+		return CategoryLocalServiceUtil.updateCategory((Category) elem);
+	}
+
+	public Locale[] getAvailableLocales() {
+		return LiferayUtil.getAvailableLocales();
+	}
+
+	public void resetController() {
+		elem = null;
+		id = null;
+		languageId = null; 
+		name = null; 
+	}
+
+	public void onChangeLanguage() {
+
+		logger.debug("Executing onChangeLocale().");
+		logger.debug("languageId = " + languageId);
+		
+		Locale locale = LiferayUtil.getLocale(languageId); 
+		name = elem.getName(locale);
+
+	}
+	
+	// Getters and setters
+	public String getLanguageId() throws PortalException, SystemException {
+		
+		if (languageId != null) {
+			return languageId;
+		} else {
+			Locale locale = PortalUtil.getSiteDefaultLocale(0); 
+			return LanguageUtil.getLanguageId(locale); 
+		}
+	}
+
+	public void setLanguageId(String languageId) {
+		this.languageId = languageId;
+	}
+
+	public String getName() throws PortalException, SystemException {
+		
+		if (name != null) {
+			return name; 
+		} else {
+			Locale locale = PortalUtil.getSiteDefaultLocale(0); 
+			return elem.getName(locale); 
+		}
+	}
+
+	public void setName(String name) {
+		this.name = name; 
+	}
 }

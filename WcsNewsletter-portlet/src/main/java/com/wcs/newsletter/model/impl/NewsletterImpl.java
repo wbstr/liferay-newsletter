@@ -48,7 +48,7 @@ public class NewsletterImpl extends NewsletterBaseImpl {
         
     }
 
-    public List<Category> getCategories() throws SystemException {
+    public List<Category> getCategories() throws SystemException, PortalException {
         if (categories == null) {
             categories = NewsletterLocalServiceUtil.getCategories(this);
         }
@@ -60,7 +60,7 @@ public class NewsletterImpl extends NewsletterBaseImpl {
         this.categories = categories;
     }
 
-    public List<Recipient> getRecipients() throws SystemException {
+	public List<Recipient> getRecipients() throws SystemException {
         if (recipients == null) {            
             recipients = NewsletterLocalServiceUtil.getRecipients(this);
         }
@@ -128,7 +128,7 @@ public class NewsletterImpl extends NewsletterBaseImpl {
         return journalArticle;
     }
 
-    public Newsletter getChild() throws SystemException {
+    public Newsletter getChild() throws SystemException, PortalException {
         Newsletter clone = (Newsletter) super.clone();
         clone.setNewsletterId(0);
         clone.setParentId(getNewsletterId());
