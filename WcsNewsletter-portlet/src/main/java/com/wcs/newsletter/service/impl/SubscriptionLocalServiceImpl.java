@@ -41,6 +41,6 @@ public class SubscriptionLocalServiceImpl extends SubscriptionLocalServiceBaseIm
     }
 
     public List<Subscription> getSubscriptions() throws SystemException {
-        return subscriptionPersistence.findAll();
+        return SubscriptionUtil.findAll();
     }
 }

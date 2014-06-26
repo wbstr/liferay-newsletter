@@ -18,7 +18,8 @@
         <configuration-action-class>com.wcs.newsletter.config.SubscriptionConfigurationActionImpl</configuration-action-class>       
         <use-default-template>true</use-default-template> 
         <instanceable>false</instanceable>        
-        <ajaxable>false</ajaxable>            
+        <requires-namespaced-parameters>false</requires-namespaced-parameters>  
+        <ajaxable>false</ajaxable>                  
         <!--<header-portlet-css>/css/jquery-ui-1.10.1.css</header-portlet-css>-->
         <!--<header-portlet-css>/css/jquery.multiselect.css</header-portlet-css>-->     
         <header-portlet-css>/css/WcsNewsletter.css</header-portlet-css>        
@@ -32,7 +33,8 @@
         <configuration-action-class>com.wcs.newsletter.config.SubscriptionJqueryConfigurationActionImpl</configuration-action-class>       
         <use-default-template>true</use-default-template> 
         <instanceable>false</instanceable>        
-        <ajaxable>false</ajaxable>            
+        <requires-namespaced-parameters>false</requires-namespaced-parameters>  
+        <ajaxable>false</ajaxable>                  
         <header-portlet-css>/css/jquery-ui-1.10.1.css</header-portlet-css>
         <header-portlet-css>/css/jquery.multiselect.css</header-portlet-css>     
         <header-portlet-css>/css/WcsNewsletter.css</header-portlet-css>        

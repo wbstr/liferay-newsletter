@@ -21,7 +21,6 @@ package com.wcs.newsletter.model.impl;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -34,25 +33,24 @@ import com.wcs.newsletter.model.Label;
 import com.wcs.newsletter.model.Newsletter;
 import com.wcs.newsletter.model.Recipient;
 import com.wcs.newsletter.service.NewsletterLocalServiceUtil;
+import com.wcs.newsletter.util.LiferayUtil;
 import java.util.List;
 
 public class NewsletterImpl extends NewsletterBaseImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(NewsletterImpl.class);
-    
     private List<Category> categories;
     private List<Recipient> recipients;
     private List<Label> labels;
-    
+
     public NewsletterImpl() {
-        
     }
 
     public List<Category> getCategories() throws SystemException {
         if (categories == null) {
-            categories = NewsletterLocalServiceUtil.getCategories(this);
+            categories = LiferayUtil.getImplFromListForClass(NewsletterLocalServiceUtil.getCategories(this), Category.class, CategoryImpl.class);
         }
-        
+
         return categories;
     }
 
@@ -61,10 +59,10 @@ public class NewsletterImpl extends NewsletterBaseImpl {
     }
 
     public List<Recipient> getRecipients() throws SystemException {
-        if (recipients == null) {            
+        if (recipients == null) {
             recipients = NewsletterLocalServiceUtil.getRecipients(this);
         }
-        
+
         return recipients;
     }
 
@@ -74,16 +72,15 @@ public class NewsletterImpl extends NewsletterBaseImpl {
 
     public List<Label> getLabels() throws SystemException {
         if (labels == null) {
-            labels = NewsletterLocalServiceUtil.getLabels(this);
+            labels = LiferayUtil.getImplFromListForClass(NewsletterLocalServiceUtil.getLabels(this), Label.class, LabelImpl.class);
         }
-        
         return labels;
     }
 
     public void setLabels(List<Label> labels) {
         this.labels = labels;
     }
-    
+
     public JournalArticle getJournalArticle(ThemeDisplay themeDisplay) throws SystemException, PortalException {
         if (themeDisplay == null) {
             logger.error("no themeDisplay");
@@ -132,11 +129,11 @@ public class NewsletterImpl extends NewsletterBaseImpl {
         Newsletter clone = (Newsletter) super.clone();
         clone.setNewsletterId(0);
         clone.setParentId(getNewsletterId());
-        clone.setCategories(getCategories());            
-        
+        clone.setCategories(getCategories());
+
         return clone;
     }
-    
+
     public boolean isRoot() {
         return getParentId() < 1;
     }

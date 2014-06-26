@@ -21,10 +21,10 @@ package com.wcs.newsletter.controller;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.wcs.newsletter.util.JsfUtil;
+import java.util.Collections;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,7 +46,7 @@ public class NavigationController extends AbstractSessionController {
     private static final int CATEGORIES_EDIT = 1;
     private static final int USERS = 2;
     private static final int USERS_EDIT = 3;
-    private static final int NEWSLETTERS = 4;    
+    private static final int NEWSLETTERS = 4;
     private static final int NEWSLETTERS_EDIT = 5;
     private static final int NEWSLETTERS_LIST = 6;
     private static final int NEWSLETTERS_LIST_EDIT = 7;
@@ -74,27 +74,35 @@ public class NavigationController extends AbstractSessionController {
     public void initSubscriptionsSubMenu() {
         setActiveSubIndex(USERS);
     }
+
     public void initSubscriptionsEditSubMenu() {
         setActiveSubIndex(USERS_EDIT);
     }
+
     public void initNewsletterSubMenu() {
         setActiveSubIndex(NEWSLETTERS);
     }
+
     public void initNewsletterEditSubMenu() {
         setActiveSubIndex(NEWSLETTERS_EDIT);
     }
+
     public void initNewsletterListSubMenu() {
         setActiveSubIndex(NEWSLETTERS_LIST);
     }
+
     public void initNewsletterListEditSubMenu() {
         setActiveSubIndex(NEWSLETTERS_LIST_EDIT);
     }
+
     public void initNewsletterConfigSubMenu() {
         setActiveSubIndex(NEWSLETTERS_CONFIG);
     }
+
     public void initCategoriesSubMenu() {
         setActiveSubIndex(CATEGORIES);
     }
+
     public void initCategoriesEditSubMenu() {
         setActiveSubIndex(CATEGORIES_EDIT);
     }
@@ -140,7 +148,7 @@ public class NavigationController extends AbstractSessionController {
     public String navigateToNewsletterCreate() {
         return EDIT;
     }
-    
+
     public String navigateToNewsletterList() {
         return LIST;
     }
@@ -166,12 +174,12 @@ public class NavigationController extends AbstractSessionController {
     }
 
     public String getLiferayFullLangCode() {
-        PortletRequest portletRequest = (PortletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        ThemeDisplay themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);
+        PortletRequest portletRequest = (PortletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();              
+        ThemeDisplay themeDisplay = (ThemeDisplay) portletRequest.getAttribute(WebKeys.THEME_DISPLAY);        
         //TODO: ez jöhetne valami abstract ős controllerből!
         return themeDisplay.getLanguageId();
     }
-    
+
     public NavigationParamController getNavigationParamController() {
         if (navigationParamController == null) {
             navigationParamController = (NavigationParamController) JsfUtil.getManagedBean("navigationParamController");
@@ -204,6 +212,7 @@ public class NavigationController extends AbstractSessionController {
 
         return NEWSLETTERS == activeSubIndex;
     }
+
     public boolean isNewslettersEdit() {
 
         return NEWSLETTERS_EDIT == activeSubIndex;

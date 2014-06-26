@@ -47,7 +47,7 @@ public class CategoryLocalServiceImpl extends CategoryLocalServiceBaseImpl {
     }
 
     public List<Category> getCategories() throws SystemException {
-        return categoryPersistence.findAll();
+        return CategoryUtil.findAll();
     }    
     
     public java.util.List<com.wcs.newsletter.model.Category> findByLocale(

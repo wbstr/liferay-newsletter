@@ -36,6 +36,7 @@ import com.liferay.faces.util.logging.Logger;
 import com.liferay.faces.util.logging.LoggerFactory;
 import com.wcs.newsletter.model.Label;
 import com.wcs.newsletter.model.Subscription;
+import com.wcs.newsletter.service.persistence.SubscriptionCategoryUtil;
 import com.wcs.tool.StringUtil;
 
 public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
@@ -58,7 +59,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         
         Long newsletterId = newsletter.getNewsletterId();
         
-        categories = newsletterPersistence.getCategories(newsletterId);
+        categories = NewsletterUtil.getCategories(newsletterId);
         
         return categories;
     }
@@ -92,7 +93,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         
         Long newsletterId = newsletter.getNewsletterId();
         
-        labels = newsletterPersistence.getLabels(newsletterId);
+        labels = NewsletterUtil.getLabels(newsletterId);
         
         if (labels == null) {
             labels = new ArrayList<Label>();
@@ -105,20 +106,20 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         if (newsletter.isNew()) {
             newsletter = newsletterLocalService.addNewsletter(newsletter);
         } else {
-            newsletter = newsletterPersistence.update(newsletter, true);
+            newsletter = NewsletterUtil.update(newsletter);
         }
         
         Long newsletterId = newsletter.getNewsletterId();
         
         List<Category> categories = newsletter.getCategories();
         
-        newsletterPersistence.clearCategories(newsletterId);
-        newsletterPersistence.addCategories(newsletterId, categories);
+        NewsletterUtil.clearCategories(newsletterId);
+        NewsletterUtil.addCategories(newsletterId, categories);
         
         List<Label> labels = newsletter.getLabels();
         
-        newsletterPersistence.clearLabels(newsletterId);
-        newsletterPersistence.addLabels(newsletterId, labels);
+        NewsletterUtil.clearLabels(newsletterId);
+        NewsletterUtil.addLabels(newsletterId, labels);
         
         logger.info("save: {0}", new Object[]{newsletter});
         
@@ -135,7 +136,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         for (Category category : categories) {
             Long categoryId = category.getCategoryId();
             
-            List<SubscriptionCategory> subscriptionCategories = subscriptionCategoryPersistence.findByCategoryId(categoryId);
+            List<SubscriptionCategory> subscriptionCategories = SubscriptionCategoryUtil.findByCategoryId(categoryId);
             for (SubscriptionCategory subscriptionCategory : subscriptionCategories) {
                 if (!subscriptionCategory.isConfirmed()) {
                     continue;
@@ -167,8 +168,7 @@ public class NewsletterLocalServiceImpl extends NewsletterLocalServiceBaseImpl {
         for (Recipient recipient : recipients) {
             logger.info("recipient: {0}", new Object[]{recipient});
             recipientLocalService.addRecipient(recipient);            
-        }        
-        
+        }
         return newsletter;
     }    
     

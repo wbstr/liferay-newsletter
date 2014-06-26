@@ -32,7 +32,7 @@
                 <h:outputLabel for="subscriptions" value="#{messages.admin_subscriptions_categories} " rendered="#{!subscriptionController.hasDefaultCategoryByLocale}" />
                 <h:selectManyListbox  required="true" requiredMessage="#{messages.subscription_chooseCat}" styleClass="multiWebstarSelect" id="subscriptions" value="#{subscriptionController.selectedCategories}" rendered="#{!subscriptionController.hasDefaultCategoryByLocale}">
                     <f:selectItems itemLabel="#{category.name}" itemValue="#{category.categoryId}" var="category" value="#{subscriptionController.categoryList}"/>
-                </h:selectManyListbox>
+                </h:selectManyListbox>              
                 <h:commandButton styleClass="newsletter-button"  actionListener="#{subscriptionController.saveSubscription()}" value="#{messages.admin_general_ok}">  
                     <f:ajax execute="@form" render="@form" />
                 </h:commandButton>

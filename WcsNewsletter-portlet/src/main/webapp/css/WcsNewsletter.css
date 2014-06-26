@@ -296,3 +296,7 @@ hr.newsletterHr{
 .newsletter-text{
     display: block;
 }
+
+.newsletterEditPanelGrid .ui-picklist select{
+    display: none;
+}

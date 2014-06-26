@@ -21,18 +21,26 @@ package com.wcs.newsletter.controller;
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.model.BaseModel;
+import com.liferay.portal.model.CacheModel;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
+import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.wcs.newsletter.comparator.AssetTagComparator;
 import com.wcs.newsletter.dto.NewsletterListElem;
 import com.wcs.newsletter.dto.NewsletterListElemDataModel;
 import com.wcs.newsletter.model.Label;
 import com.wcs.newsletter.model.Newsletter;
+import com.wcs.newsletter.model.impl.LabelImpl;
 import com.wcs.newsletter.service.NewsletterLocalServiceUtil;
 import com.wcs.newsletter.util.LiferayUtil;
 import com.wcs.tool.StringUtil;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -40,6 +48,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -84,7 +94,7 @@ public class NewsletterListController extends AbstractListController<NewsletterL
                     String tags = getTags(newsletter);
                     List<Newsletter> childNws = NewsletterLocalServiceUtil.findByParentId(newsletter.getNewsletterId());
                     if (childNws.size() > 0) {
-                        creationDate = childNws.get(childNws.size()-1).getCreationTime();
+                        creationDate = childNws.get(childNws.size() - 1).getCreationTime();
                     }
                     elems.add(new NewsletterListElem(newsletterId, subject, sender, tags, creationDate));
                 }
@@ -128,15 +138,36 @@ public class NewsletterListController extends AbstractListController<NewsletterL
         if (newsletter == null) {
             return assetTags;
         }
-
         List<Label> labels = newsletter.getLabels();
-        for (Label label : labels) {
+        List<LabelImpl> labelsImpl = LiferayUtil.getImplFromListForClass(labels, LabelImpl.class);
+        for (LabelImpl label : labelsImpl) {
             Long tagId = label.getTagId();
             AssetTag assetTag = getTagsMap().get(tagId);
             if (assetTag != null) {
                 assetTags.add(assetTag);
             }
         }
+
+//        for (int i = 0; i < labels.size(); i++) {
+//            try {
+//                Object label = labels.get(i);
+//                JSONObject jobj = JSONFactoryUtil.createJSONObject(label.toString());
+//                Long tagId = jobj.getLong("tagId");
+//                AssetTag assetTag = getTagsMap().get(tagId);
+//                if (assetTag != null) {
+//                    assetTags.add(assetTag);
+//                }
+//            } catch (JSONException ex) {
+//                Logger.getLogger(NewsletterListController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+//        for (Label label : labels) {
+//            Long tagId =  label.getTagId();
+//            AssetTag assetTag = getTagsMap().get(tagId);
+//            if (assetTag != null) {
+//                assetTags.add(assetTag);
+//            }
+//        }
 
         Locale locale = LiferayUtil.getThemeDisplay().getLocale();
         Collections.sort(assetTags, new AssetTagComparator(locale));

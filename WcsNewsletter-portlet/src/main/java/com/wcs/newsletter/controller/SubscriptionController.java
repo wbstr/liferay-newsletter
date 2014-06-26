@@ -159,7 +159,7 @@ public class SubscriptionController extends AbstractController {
     }    
     
     public void saveSubscription() {
-            
+            System.out.println("vagyok");
         try {            
             String email = getEmail();
             

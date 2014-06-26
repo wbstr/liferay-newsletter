@@ -43,6 +43,8 @@ import com.wcs.newsletter.model.Category;
 import com.wcs.newsletter.model.Label;
 import com.wcs.newsletter.model.Newsletter;
 import com.wcs.newsletter.model.Recipient;
+import com.wcs.newsletter.model.impl.CategoryImpl;
+import com.wcs.newsletter.model.impl.LabelBaseImpl;
 import com.wcs.newsletter.model.impl.NewsletterImpl;
 import com.wcs.newsletter.service.CategoryLocalServiceUtil;
 import com.wcs.newsletter.service.NewsletterLocalServiceUtil;
@@ -84,7 +86,7 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
 
     private static final String SENDING_ERROR = "admin_newsletters_sending_error";
     private static final String SENDING_SUCCESS = "admin_newsletters_sending_success";
-    private DualListModel<Category> categoriesModel;
+    private DualListModel<CategoryImpl> categoriesModel;
     private List<JournalArticle> webContentList;
     private NewsletterListElemDataModel childModel;
     private JournalArticle selectedWc;
@@ -120,7 +122,7 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
             }
 
             Locale locale = LiferayUtil.getThemeDisplay().getLocale();
-            Collections.sort(tags, new AssetTagComparator(locale));
+            //    Collections.sort(tags, new AssetTagComparator(locale));
         }
 
 //        logger.info("getTags: {0}db", new Object[]{tags.size()});
@@ -537,9 +539,10 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
 
             if (!getElem().isNew()) {
                 try {
-                    List<Category> userCategories = getElem().getCategories();
+                    List<CategoryImpl> userCategories = LiferayUtil.getImplFromListForClass(getElem().getCategories(), CategoryImpl.class, CategoryImpl.class);
+
                     if (ListUtil.isNotEmpty(userCategories)) {
-                        Category category = userCategories.get(0);
+                        CategoryImpl category = userCategories.get(0);
                         categoryLocale = category.getLocale();
                     }
                 } catch (Exception e) {
@@ -560,17 +563,17 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
         //logger.info("initCategoriesModel: {0}", new Object[]{categoriesModel});
 
         if (categoriesModel == null) {
-            categoriesModel = new DualListModel<Category>();
+            categoriesModel = new DualListModel<CategoryImpl>();
 
-            List<Category> source = new ArrayList<Category>();
-            List<Category> target = new ArrayList<Category>();
+            List<CategoryImpl> source = new ArrayList<CategoryImpl>();
+            List<CategoryImpl> target = new ArrayList<CategoryImpl>();
 
             try {
-                List<Category> allCategories = CategoryLocalServiceUtil.findByLocale(getCategoryLocale());
+                List<CategoryImpl> allCategories = LiferayUtil.getImplFromListForClass(CategoryLocalServiceUtil.findByLocale(getCategoryLocale()),CategoryImpl.class);
                 source.addAll(allCategories);
 
                 if (!getElem().isNew()) {
-                    List<Category> userCategories = getElem().getCategories();
+                    List<CategoryImpl> userCategories = LiferayUtil.getImplFromListForClass(getElem().getCategories(), CategoryImpl.class);
                     source.removeAll(userCategories);
                     target.addAll(userCategories);
                 }
@@ -649,11 +652,11 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
         this.childModel = childModel;
     }
 
-    public DualListModel<Category> getCategoriesModel() {
+    public DualListModel<CategoryImpl> getCategoriesModel() {
         return categoriesModel;
     }
 
-    public void setCategoriesModel(DualListModel<Category> categoriesModel) {
+    public void setCategoriesModel(DualListModel<CategoryImpl> categoriesModel) {
         this.categoriesModel = categoriesModel;
     }
 
@@ -686,7 +689,7 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
     }
 
     public Newsletter newsletterSave() throws SystemException {
-        getElem().setCategories(getCategoriesModel().getTarget());
+        getElem().setCategories(LiferayUtil.getImplFromListForClass(getCategoriesModel().getTarget(),Category.class,CategoryImpl.class));
         getElem().setContentId(String.valueOf(selectedWc.getArticleId()));
         getElem().setContentVersion(String.valueOf(selectedWc.getVersion()));
         getElem().setTemplateId(String.valueOf(selectedTemplate.getFileEntryId()));
