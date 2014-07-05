@@ -3,6 +3,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
+                
+                    
     <p:panel id="subscriptionTabPanel" style="border:none; border-radius: 0;padding:0;margin: 0px;">
         <p:panel id="listPanel" rendered="#{!subscriptionTabWrapperController.editView}" style="border:none; border-radius: 0;padding:0;margin: 0px;">
             <h:form id="subscriptionTabListForm">                
@@ -63,11 +65,11 @@
 
                     <h:outputText value="#{messages.admin_subscriptions_categories}:" styleClass="outputText" />
 
-                    <p:pickList id="categories" var="category" value="#{subscriptionEditController.categoriesModel}" itemLabel="#{category.name}" style="width:800px" itemValue="#{category}" converter="categoryConverter" >
+                    <p:pickList id="categories" var="category" value="#{subscriptionEditController.categoriesModel}" itemLabel="#{category.getName($locale)}" style="width:800px" itemValue="#{category}" converter="categoryConverter" >
                         <f:facet name="sourceCaption">#{messages.admin_newsletters_picklist_available}</f:facet>  
                         <f:facet name="targetCaption">#{messages.admin_newsletters_picklist_selected}</f:facet>                  
                         <p:column style="width:90%;">  
-                            #{category.name}  
+                            #{category.getName($locale)}  
                         </p:column>                          
                         <p:column style="width:10%">  
                             <span class="#{subscriptionEditController.getCategoryConfirmed(category.categoryId)? 'circleSpan': ''}"></span>
