@@ -24,8 +24,10 @@ package com.wcs.newsletter.controller;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PrefsParamUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
@@ -733,17 +735,30 @@ public class NewsletterEditController extends AbstractEditController<Newsletter,
     public void send() {
         // TODO: persisted check
         // TODO: change check
+    	
+    	logger.debug("Executing send()."); 
 
         resetChildModel();
-
+        
         Newsletter newsletter = null;
+                
         try {
             newsletter = getElem().getChild();
+            
+            JournalArticle article = newsletter.getJournalArticle(getThemeDisplay()); 
+            String languageId = article.getDefaultLanguageId(); 
+            
+            logger.debug("languageId = " + languageId);
+            
+            Locale articleLocale = LocaleUtil.fromLanguageId(languageId); 
+            
+            logger.debug("articleLocale = " + articleLocale);
+            				
             newsletter.setCreationTime(DateUtil.getCurrentDate());
             newsletter = NewsletterLocalServiceUtil.saveChild(newsletter);
 
             List<Recipient> recipientsSaver = newsletter.getRecipients();
-            NewsletterSenderList recipients = new NewsletterSenderList(newsletter);
+            NewsletterSenderList recipients = new NewsletterSenderList(newsletter, articleLocale);
 
             NewsletterSender newsletterSender = new NewsletterSender(newsletter, recipients, getThemeDisplay(), templateId);
             newsletterSender.send();

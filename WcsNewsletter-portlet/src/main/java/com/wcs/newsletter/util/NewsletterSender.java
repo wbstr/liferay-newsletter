@@ -60,7 +60,7 @@ public class NewsletterSender {
 
         JournalArticle journalArticle = newsletter.getJournalArticle(themeDisplay);
 
-        logger.info("journalArticle: {0}", new Object[]{journalArticle});
+        // logger.info("journalArticle: {0}", new Object[]{journalArticle});
 
         String content = getArticleContent(journalArticle, languageId, templateKey);
 

@@ -65,7 +65,7 @@ public class NewsletterSenderThread implements Runnable {
 
     public void sendEmail(SendListElem rcpt, InternetAddress from, String subject, String body, boolean sendHtml) {
         try {
-            logger.info("sendEmail {0} {1} {2} {3}", new Object[]{from, subject, rcpt, body});
+            // logger.info("sendEmail {0} {1} {2} {3}", new Object[]{from, subject, rcpt, body});
 
             List<NewsletterConfig> configs = NewsletterConfigLocalServiceUtil.findByConfigKey("subscriptionActionLayout");
             NewsletterConfig subscriptionActionLayout;

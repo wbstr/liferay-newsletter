@@ -5,7 +5,7 @@
     <artifactId>WcsNewsletter</artifactId>
     <packaging>pom</packaging>
     <name>WcsNewsletter</name>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <modules>
         <module>WcsNewsletter-portlet-service</module>
         <module>WcsNewsletter-portlet</module>

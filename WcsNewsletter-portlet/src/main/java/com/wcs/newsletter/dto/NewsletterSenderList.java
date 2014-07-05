@@ -40,6 +40,7 @@ import com.wcs.tool.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,7 +76,7 @@ public class NewsletterSenderList {
         }
     }
 
-    public NewsletterSenderList(Newsletter newsletter) {
+    public NewsletterSenderList(Newsletter newsletter, Locale locale) {
         try {
 
 //            initNewsletterCategory();
@@ -111,7 +112,14 @@ public class NewsletterSenderList {
                             User newletterRecipUser = UserLocalServiceUtil.getUser(subscription.getUserId());
                             listElem.setNewsletterUser(newletterRecipUser);
                         }
-                        listElem.setCategoryName(category.getName());
+                        
+                        String categoryName = category.getName(locale); 
+                        
+                        System.out.println("categoryName = " + categoryName); 
+                        
+                        listElem.setCategoryName(categoryName);
+                        
+//                        listElem.setCategoryName(category.getName());
 
                         InternetAddress internetAddress = new InternetAddress(email);
                         listElem.setSubscriptionEmail(internetAddress);
